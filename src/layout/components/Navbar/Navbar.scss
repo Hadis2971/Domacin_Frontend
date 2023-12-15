@@ -1,0 +1,21 @@
+#main-navbar {
+  width: 100% !important;
+  margin: 0px !important;
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+
+    .logo {
+      width: 2em;
+      height: 2em;
+      margin-right: 0.3em;
+    }
+  }
+
+  .shopping-cart-icon {
+    color: #e91e63;
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+}
