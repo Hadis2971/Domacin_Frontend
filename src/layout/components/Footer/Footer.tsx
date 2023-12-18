@@ -7,7 +7,7 @@ import "./Footer.scss";
 
 export default function () {
   return (
-    <Container fluid id="main-footer" className="fixed-bottom">
+    <Container fluid id="main-footer" className="sticky-bottom">
       <Container>
         <Row>
           <Col>

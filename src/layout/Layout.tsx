@@ -10,10 +10,8 @@ import "./Layout.scss";
 
 export default function ({ children }: LayoutProps) {
   return (
-    <Container id="main-layout" fluid className="p-0 m-0 h-100">
-      <Row>
-        <Navbar />
-      </Row>
+    <Container id="main-layout" fluid className="p-0 m-0">
+      <Navbar />
 
       <Row id="main-content" className="content-height">
         {children}
