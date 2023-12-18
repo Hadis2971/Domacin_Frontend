@@ -38,12 +38,7 @@ export default function () {
   );
 
   return (
-    <Navbar
-      id="main-navbar"
-      expand="lg"
-      className="bg-body-tertiary"
-      sticky="top"
-    >
+    <Navbar id="main-navbar" expand="lg" className="bg-body-tertiary">
       <Container>
         <Navbar.Brand href="#home">
           <Image
