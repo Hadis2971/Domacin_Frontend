@@ -1,36 +1,46 @@
 .product-container {
   width: 90%;
+  height: fit-content;
   position: relative;
   display: flex;
   align-items: center;
+
   padding: 3%;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #fff;
 
-  .image-container {
-    width: 100%;
-    height: 100%;
+  .images-container {
+    width: 200px;
     position: relative;
     right: 10%;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: #fff;
 
-    img {
-      display: block;
-      width: 100%;
-      height: 100%;
+    .current-image-container {
+      width: 200px;
+      height: 300px;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
   }
 
   .info-container {
-    width: 100%;
+    width: 45%;
     height: 100%;
     position: relative;
     right: 7%;
     color: #404040;
 
-    .price {
+    .price,
+    .stock,
+    .category {
       color: #e91e63;
     }
 
@@ -41,6 +51,84 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+  }
+}
+
+.product-container:nth-child(3n + 1):last-child {
+  grid-column: 2 / span 1;
+}
+
+#images-carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: auto;
+  overflow: hidden;
+  padding: 10px 5px;
+
+  .images-carousel {
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 5px;
+
+    .next-image {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      margin: 0px 10px;
+      border: 1px solid #f2f2f2;
+      cursor: pointer;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 2px dotted #ccc;
+      }
+
+      .active-image {
+        border: 2px dotted #e91e63;
+      }
+    }
+  }
+
+  .fa-caret-right,
+  .fa-caret-left {
+    cursor: pointer;
+    color: #e91363;
+  }
+
+  .next-image-animation {
+    right: 0px;
+    animation-name: example;
+    animation-duration: 0.25s;
+    animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  @keyframes example {
+    from {
+      right: 140px;
+    }
+    to {
+      right: 0px;
+    }
+  }
+
+  .previous-image-animation {
+    left: 0;
+    animation-name: example2;
+    animation-duration: 0.25s;
+    animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  @keyframes example2 {
+    from {
+      left: 140px;
+    }
+    to {
+      left: 0px;
     }
   }
 }
