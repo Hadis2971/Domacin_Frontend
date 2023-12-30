@@ -2,10 +2,14 @@ import { useState } from "react";
 
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
+import Carousel from "react-bootstrap/Carousel";
+import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
 import { ProductProps, ImagesCarouselProps } from "./types";
+
+import useGetIsMobileScreenView from "../../hooks/useGetIsMobileScreenView";
 
 import "./Product.scss";
 
@@ -54,6 +58,8 @@ export default function ({
   images,
 }: ProductProps) {
   const [currentImage, setCurrentImage] = useState(0);
+
+  const isMobileView = useGetIsMobileScreenView();
 
   const handleGetNextImage = () => {
     const nextCurrentImage =
@@ -116,7 +122,7 @@ export default function ({
 
   if (!images.length) return null;
 
-  return (
+  const DesktopProductView = () => (
     <div className="product-outter-container">
       <div className="product-inner-container">
         <div className="images-container">
@@ -150,4 +156,42 @@ export default function ({
       </div>
     </div>
   );
+
+  console.log(isMobileView);
+
+  const MobileProductView = () => (
+    <Card style={{ width: "18rem" }} className="mobile-product-container">
+      {images?.length > 0 ? (
+        <Carousel>
+          {images.map((image) => (
+            <Carousel.Item>
+              <Image src={image} />
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      ) : (
+        <Card.Img
+          variant="top"
+          src="https://st4.depositphotos.com/17828278/24401/v/450/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg"
+        />
+      )}
+
+      <Card.Body>
+        <Card.Title>{title}</Card.Title>
+        <Card.Text>
+          {description?.length > 20
+            ? `${description.slice(0, 60)}...`
+            : description}
+        </Card.Text>
+        <div className="buttons-container">
+          <Button>Saznaj Vise</Button>
+          <Button>Dodaj</Button>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+
+  if (isMobileView) return <MobileProductView />;
+
+  return <DesktopProductView />;
 }
