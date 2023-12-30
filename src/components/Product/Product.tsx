@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Image from "react-bootstrap/Image";
+import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -116,30 +117,36 @@ export default function ({
   if (!images.length) return null;
 
   return (
-    <div className="product-container">
-      <div className="images-container">
-        <div className="current-image-container">
-          {images[currentImage] ? <Image src={images[currentImage]} /> : null}
+    <div className="product-outter-container">
+      <div className="product-inner-container">
+        <div className="images-container">
+          <div className="current-image-container">
+            {images[currentImage] ? <Image src={images[currentImage]} /> : null}
+          </div>
+          <ImagesCarousel
+            images={images}
+            currentImage={currentImage}
+            onHandleGetNextImage={handleGetNextImage}
+            onHandleGetPreviousImage={handleGetPreviousImage}
+            onSetCurrentImage={setCurrentImage}
+          />
         </div>
-        <ImagesCarousel
-          images={images}
-          currentImage={currentImage}
-          onHandleGetNextImage={handleGetNextImage}
-          onHandleGetPreviousImage={handleGetPreviousImage}
-          onSetCurrentImage={setCurrentImage}
-        />
-      </div>
-      <div className="info-container">
-        <h3>{title}</h3>
+        <div className="info-container">
+          <h1>{title}</h1>
 
-        <div className="price">{`Cijena: ${price}`}</div>
-        <div className="stock">{`Raspolozivost: ${stock}`}</div>
-        {categories && categories.length > 0 && (
-          <div className="category">{`Kategorije: ${categories?.join(
-            ","
-          )}`}</div>
-        )}
-        <div className="description">{description}</div>
+          <h2 className="price">{price}</h2>
+          <div className="stock">{`Raspolozivost: ${stock}`}</div>
+          {categories && categories.length > 0 && (
+            <div className="category">{`Kategorije: ${categories?.join(
+              ","
+            )}`}</div>
+          )}
+          <div className="description">{description}</div>
+          <div className="buttons-container">
+            <Button>Saznaj Vise</Button>
+            <Button>Dodaj</Button>
+          </div>
+        </div>
       </div>
     </div>
   );
