@@ -4,6 +4,7 @@
   border-radius: 5px;
   background-color: #fff;
   padding: 5%;
+  margin: 1%;
 
   .product-inner-container {
     width: 120%;
@@ -11,6 +12,10 @@
     right: 20%;
     display: flex;
     align-items: center;
+
+    @media (max-width: 1700px) {
+      width: 123%;
+    }
 
     .images-container {
       width: 200px;
@@ -72,9 +77,28 @@
 .mobile-product-container.card {
   width: 18em;
   height: fit-content;
+  margin: 1%;
 
   .carousel-item {
     width: 18em;
+    height: 13em;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+@media (max-width: 980px) {
+  .mobile-product-container.card {
+    width: 100%;
+  }
+
+  .carousel-item {
+    width: 100% !important;
     height: 13em;
 
     img {

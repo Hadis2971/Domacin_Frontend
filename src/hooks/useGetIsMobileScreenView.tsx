@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const MOBILE_SCREEN_WIDTH = 768;
+const MOBILE_SCREEN_WIDTH = 980;
 
 const useGetIsMobileScreenView = () => {
   const [isMobile, setIsMobile] = useState(

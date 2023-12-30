@@ -157,10 +157,8 @@ export default function ({
     </div>
   );
 
-  console.log(isMobileView);
-
   const MobileProductView = () => (
-    <Card style={{ width: "18rem" }} className="mobile-product-container">
+    <Card className="mobile-product-container">
       {images?.length > 0 ? (
         <Carousel>
           {images.map((image) => (

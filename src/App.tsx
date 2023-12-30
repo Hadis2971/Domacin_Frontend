@@ -33,10 +33,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const w = useGetIsMobileScreenView();
-
-  console.log(w);
-
   return <RouterProvider router={router} />;
 }
 
