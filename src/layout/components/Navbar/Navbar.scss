@@ -18,4 +18,14 @@
     font-size: 1.5em;
     cursor: pointer;
   }
+
+  a {
+    text-decoration: none;
+    color: initial;
+  }
+
+  a:focus {
+    text-decoration: none;
+    color: initial;
+  }
 }

@@ -5,6 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Image from "react-bootstrap/Image";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
@@ -40,19 +41,27 @@ export default function () {
   return (
     <Navbar id="main-navbar" expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="#home">
-          <Image
-            className="logo"
-            src="https://domacin.ba/wp-content/uploads/2022/02/cropped-cropped-cropped-logo-domacinba-270x270.png"
-          />
-          Domacin
-        </Navbar.Brand>
+        <Link to="/">
+          <Navbar.Brand>
+            <Image
+              className="logo"
+              src="https://domacin.ba/wp-content/uploads/2022/02/cropped-cropped-cropped-logo-domacinba-270x270.png"
+            />
+            Domacin
+          </Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#home">Pocetna</Nav.Link>
-            <Nav.Link href="#link">Shop</Nav.Link>
-            <Nav.Link href="#link">Clanci</Nav.Link>
+            <Nav.Link>
+              <Link to="/">Pocetna</Link>
+            </Nav.Link>
+            <Nav.Link>
+              <Link to="shop">Shop</Link>
+            </Nav.Link>
+            <Nav.Link>
+              <Link to="articles">Clanci</Link>
+            </Nav.Link>
             <Nav.Link target="_blank" href="https://www.blog.domacin.ba/">
               Arhiva
             </Nav.Link>
