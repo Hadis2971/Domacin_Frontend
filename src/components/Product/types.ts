@@ -13,9 +13,11 @@ export type ProductProps = {
 };
 
 export type ImagesCarouselProps = {
-  images?: any[];
+  id: number;
+  images?: string[];
+};
+
+export type ImagesCarouselPropsState = {
   currentImage: number;
-  onHandleGetNextImage: () => void;
-  onHandleGetPreviousImage: () => void;
-  onSetCurrentImage: Dispatch<SetStateAction<number>>;
+  type: string;
 };

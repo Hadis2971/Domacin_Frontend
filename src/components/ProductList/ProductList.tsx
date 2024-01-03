@@ -4,7 +4,7 @@ import "./ProductList.scss";
 
 export default function () {
   return (
-    <div id="products-list-container">
+    <div id="ProductList">
       <Product
         id={1}
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempor
