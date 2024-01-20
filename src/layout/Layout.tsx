@@ -14,6 +14,10 @@ export default function () {
         <Navbar />
       </Row>
 
+      <Row id="jumbotron">
+        <h1>Hello World</h1>
+      </Row>
+
       <Row id="main-content">
         <Outlet />
       </Row>
