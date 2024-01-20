@@ -38,7 +38,7 @@
         font-style: italic;
       }
 
-      .description {
+      .shortDescription {
         width: 100%;
         display: -webkit-box;
         -webkit-line-clamp: 10;
@@ -114,7 +114,7 @@
     }
 
     button:first-child {
-      background-color: #737373;
+      background-color: #8c8c8c;
     }
 
     button:nth-child(2) {

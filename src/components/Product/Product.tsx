@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import Carousel from "react-bootstrap/Carousel";
@@ -6,6 +8,8 @@ import Card from "react-bootstrap/Card";
 import useGetIsMobileScreenView from "../../hooks/useGetIsMobileScreenView";
 
 import ImagesCarousel from "./components/ImagesCarousel/ImagesCarousel";
+import ProductDetails from "./components/ProductDetails/ProductDetails";
+
 import { ProductProps } from "./types";
 
 import "./Product.scss";
@@ -13,13 +17,20 @@ import "./Product.scss";
 export default function ({
   id,
   title,
-  description,
+  shortDescription,
+  longDescription,
   price,
   stock,
   quantity,
   categories,
   images,
 }: ProductProps) {
+  const [showProductDetails, setShowProductDetails] = useState(false);
+
+  const handleToggleShowProductDetails = () => {
+    setShowProductDetails((showProductDetails) => !showProductDetails);
+  };
+
   const isMobileView = useGetIsMobileScreenView();
 
   const DesktopProductView = () => (
@@ -36,9 +47,11 @@ export default function ({
               ","
             )}`}</div>
           )}
-          <div className="description">{description}</div>
+          <div className="shortDescription">{shortDescription}</div>
           <div className="buttons-container">
-            <Button>Saznaj Vise</Button>
+            <Button onClick={handleToggleShowProductDetails}>
+              Saznaj Vise
+            </Button>
             <Button>Dodaj</Button>
           </div>
         </div>
@@ -66,9 +79,9 @@ export default function ({
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>
-          {description?.length > 20
-            ? `${description.slice(0, 60)}...`
-            : description}
+          {shortDescription?.length > 20
+            ? `${shortDescription.slice(0, 60)}...`
+            : shortDescription}
         </Card.Text>
         <div className="buttons-container">
           <Button>Saznaj Vise</Button>
@@ -78,7 +91,21 @@ export default function ({
     </Card>
   );
 
-  if (isMobileView) return <MobileProductView />;
+  return (
+    <>
+      {isMobileView ? <MobileProductView /> : <DesktopProductView />}
 
-  return <DesktopProductView />;
+      {showProductDetails && (
+        <ProductDetails
+          images={images}
+          shortDescription={shortDescription}
+          longDescription={longDescription}
+          title={title}
+          id={id}
+          price={price}
+          onClose={() => setShowProductDetails(false)}
+        />
+      )}
+    </>
+  );
 }

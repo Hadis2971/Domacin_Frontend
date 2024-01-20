@@ -1,9 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
-
 export type ProductProps = {
   id: number;
   title: string;
-  description: string;
+  shortDescription: string;
+  longDescription: string;
   price: number;
   stock?: number;
   recension?: number;
@@ -21,3 +20,7 @@ export type ImagesCarouselPropsState = {
   currentImage: number;
   type: string;
 };
+
+export type ProductDetailsProps = {
+  onClose: () => void;
+} & ProductProps;
