@@ -1,3 +1,5 @@
+@import "../../../../index.scss";
+
 #ImagesCarousel {
   width: 200px;
   border: 1px solid #ccc;
@@ -47,7 +49,7 @@
         }
 
         .active-image {
-          border: 2px dotted #e91e63;
+          border: 2px dotted $primary-color;
         }
       }
     }
@@ -55,7 +57,7 @@
     .fa-caret-right,
     .fa-caret-left {
       cursor: pointer;
-      color: #e91363;
+      color: $primary-color;
     }
 
     .next-image-animation {

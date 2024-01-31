@@ -1,6 +1,8 @@
+@import "../../../../../../index.scss";
+
 #RecensionForm {
   h1 {
-    color: #3c4858;
+    color: $text-main-color;
     margin: 10px 0px;
     font-weight: 300;
   }

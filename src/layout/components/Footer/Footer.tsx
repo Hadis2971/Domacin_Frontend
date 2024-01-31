@@ -13,9 +13,9 @@ export default function () {
         <Row>
           <Col>
             <Nav.Link className="d-inline mx-3">Shop</Nav.Link>
-            <Nav.Link className="d-inline">
-              <Link to="/auth">Account</Link>
-            </Nav.Link>
+            <Link className="d-inline" to="/auth">
+              Account
+            </Link>
           </Col>
         </Row>
       </Container>
