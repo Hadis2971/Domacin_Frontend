@@ -40,7 +40,7 @@ export default function ({
         <div className="info-container">
           <h1>{title}</h1>
 
-          <h2 className="price">{price}</h2>
+          <h2 className="price">{price}KM</h2>
           <div className="stock">{`Raspolozivost: ${stock}`}</div>
           {categories && categories.length > 0 && (
             <div className="category">{`Kategorije: ${categories?.join(
