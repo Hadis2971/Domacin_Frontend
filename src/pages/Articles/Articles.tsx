@@ -37,12 +37,12 @@ export default function () {
   return (
     <Container>
       <Row>
-        <Col lg="7" sm="12">
-          {[1, 2, 3, 4, 5].map(() => (
-            <Article {...mockData} />
+        <Col xl="7" lg="12">
+          {[1, 2, 3, 4, 5].map((idx) => (
+            <Article {...mockData} key={idx} />
           ))}
         </Col>
-        <Col lg="5" sm="12">
+        <Col xl="5" lg="12">
           Hello World
         </Col>
       </Row>

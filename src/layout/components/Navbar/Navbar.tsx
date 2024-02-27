@@ -53,15 +53,10 @@ export default function () {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link>
-              <Link to="/">Pocetna</Link>
-            </Nav.Link>
-            <Nav.Link>
-              <Link to="shop">Shop</Link>
-            </Nav.Link>
-            <Nav.Link>
-              <Link to="articles">Clanci</Link>
-            </Nav.Link>
+            <Link to="/">Pocetna</Link>
+            <Link to="shop">Shop</Link>
+            <Link to="articles">Clanci</Link>
+
             <Nav.Link target="_blank" href="https://www.blog.domacin.ba/">
               Arhiva
             </Nav.Link>

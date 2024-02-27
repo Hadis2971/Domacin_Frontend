@@ -108,7 +108,7 @@ export default function ImagesCarousel({ id, images }: ImagesCarouselProps) {
   const { currentImage } = state;
 
   return (
-    <div id="ImagesCarousel">
+    <div className="ImagesCarousel">
       <div className="current-image-container">
         {images && images[currentImage] ? (
           <Image src={images[currentImage]} />

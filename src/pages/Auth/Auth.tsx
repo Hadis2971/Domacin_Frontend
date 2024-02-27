@@ -15,6 +15,7 @@ export default function () {
         position: "initial",
       }}
     >
+      <h2>Napravite Svoj Korisnicki Racun</h2>
       <Modal.Dialog size="lg">
         <Modal.Header>
           <Modal.Title>Prijava</Modal.Title>

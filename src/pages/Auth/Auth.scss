@@ -1,7 +1,31 @@
+@import "../../index.scss";
+
 #Auth {
+  h2 {
+    color: $text-main-color;
+    font-weight: 300;
+    text-align: center;
+    margin: 3% auto 0% auto;
+  }
+
   .modal-content {
+    height: 100%;
     position: relative;
-    top: 50%;
-    transform: translateY(50%);
+    top: 25%;
+    transform: translateY(25%);
+    animation-name: topToBottomAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  @keyframes topToBottomAnimation {
+    from {
+      top: 0%;
+      transform: translateY(0%);
+    }
+    to {
+      top: 25%;
+      transform: translateY(25%);
+    }
   }
 }

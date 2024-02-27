@@ -9,6 +9,7 @@
 
   @media (max-width: 1560px) {
     grid-template-columns: repeat(2, 1fr);
+    height: auto !important;
   }
 
   @media (max-width: 768px) {

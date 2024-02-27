@@ -15,6 +15,12 @@
     }
   }
 
+  .navbar-nav {
+    align-items: center;
+    justify-content: space-evenly;
+    width: 30%;
+  }
+
   .shopping-cart-icon {
     color: $primary-color;
     font-size: 1.5em;
