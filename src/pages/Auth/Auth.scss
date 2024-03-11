@@ -1,6 +1,8 @@
 @import "../../index.scss";
 
 #Auth {
+  z-index: 0;
+
   h2 {
     color: $text-main-color;
     font-weight: 300;
@@ -11,8 +13,8 @@
   .modal-content {
     height: 100%;
     position: relative;
-    top: 25%;
-    transform: translateY(25%);
+    top: 5%;
+    transform: translateY(5%);
     animation-name: topToBottomAnimation;
     animation-duration: 1.5s;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -24,8 +26,31 @@
       transform: translateY(0%);
     }
     to {
-      top: 25%;
-      transform: translateY(25%);
+      top: 5%;
+      transform: translateY(5%);
+    }
+  }
+
+  .auth-footer {
+    display: block;
+
+    .register-login-btn {
+      background-color: $primary-color;
+      color: #fff;
+      outline: none;
+      box-shadow: none;
+      border: none;
+    }
+
+    .register-login-toggle {
+      text-align: center;
+      color: #a6a6a6;
+      font-size: 1em;
+      margin-top: 10px;
+
+      span {
+        cursor: pointer;
+      }
     }
   }
 }

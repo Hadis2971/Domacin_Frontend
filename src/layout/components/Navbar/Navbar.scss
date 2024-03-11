@@ -36,4 +36,15 @@
     text-decoration: none;
     color: initial;
   }
+
+  .navbar-controls {
+    display: flex;
+    align-items: center;
+
+    .auth {
+      cursor: pointer;
+      color: #a6a6a6;
+      margin-left: 20px;
+    }
+  }
 }

@@ -6,10 +6,10 @@ import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Image from "react-bootstrap/Image";
 import { Link } from "react-router-dom";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faUser } from "@fortawesome/free-solid-svg-icons";
 
+import { useAuthUser, useLogoutUser } from "../../../http/useAuth";
 import { NavbarOffcanvasProps } from "./types";
 
 import "./Navbar.scss";
@@ -27,6 +27,10 @@ const NavbarOffcanvas = ({ show, handleClose }: NavbarOffcanvasProps) => (
 );
 
 export default function () {
+  const logOut = useLogoutUser();
+
+  const { data } = useAuthUser();
+
   const [showOffcanvasSidebar, setShowOffcanvasSidebar] = useState(false);
 
   const openOffcanvasSidebar = useCallback(
@@ -63,11 +67,20 @@ export default function () {
           </Nav>
 
           <Nav className="align-items-start">
-            <FontAwesomeIcon
-              icon={faShoppingCart}
-              className="shopping-cart-icon"
-              onClick={openOffcanvasSidebar}
-            />
+            <div className="navbar-controls">
+              <FontAwesomeIcon
+                icon={faShoppingCart}
+                className="shopping-cart-icon"
+                onClick={openOffcanvasSidebar}
+              />
+
+              {!!data && (
+                <div className="auth" onClick={logOut}>
+                  <FontAwesomeIcon icon={faUser} />
+                  <span>{data.username} Odjavite Se</span>
+                </div>
+              )}
+            </div>
           </Nav>
         </Navbar.Collapse>
       </Container>

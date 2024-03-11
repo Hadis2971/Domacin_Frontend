@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import Layout from "./layout/Layout";
 
@@ -8,6 +9,8 @@ import Shop from "./pages/Shop/Shop";
 import Articles from "./pages/Articles/Articles";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -35,7 +38,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
