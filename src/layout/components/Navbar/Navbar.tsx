@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext } from "react";
 
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faUser } from "@fortawesome/free-solid-svg-icons";
 
+import { ProductsContext } from "../../../state/Products";
 import { useAuthUser, useLogoutUser } from "../../../http/useAuth";
 import { NavbarOffcanvasProps } from "./types";
 
@@ -27,11 +28,22 @@ const NavbarOffcanvas = ({ show, handleClose }: NavbarOffcanvasProps) => (
 );
 
 export default function () {
+  const value = useContext(ProductsContext);
+
   const logOut = useLogoutUser();
 
   const { data } = useAuthUser();
 
   const [showOffcanvasSidebar, setShowOffcanvasSidebar] = useState(false);
+
+  console.log(value?.selectedProducts);
+
+  const numberOfSelectedProducts = value?.selectedProducts
+    ? Object.values(value.selectedProducts).reduce(
+        (curr, acc) => (acc += curr),
+        0
+      )
+    : null;
 
   const openOffcanvasSidebar = useCallback(
     () => setShowOffcanvasSidebar(true),
@@ -68,11 +80,17 @@ export default function () {
 
           <Nav className="align-items-start">
             <div className="navbar-controls">
-              <FontAwesomeIcon
-                icon={faShoppingCart}
-                className="shopping-cart-icon"
-                onClick={openOffcanvasSidebar}
-              />
+              <div>
+                <FontAwesomeIcon
+                  icon={faShoppingCart}
+                  className="shopping-cart-icon"
+                  onClick={openOffcanvasSidebar}
+                />
+
+                {!!numberOfSelectedProducts && (
+                  <span className="number-of-selected-products">{`(${numberOfSelectedProducts})`}</span>
+                )}
+              </div>
 
               {!!data && (
                 <div className="auth" onClick={logOut}>

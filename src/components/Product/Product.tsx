@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
@@ -10,6 +10,7 @@ import useGetIsMobileScreenView from "../../hooks/useGetIsMobileScreenView";
 import ImagesCarousel from "./components/ImagesCarousel/ImagesCarousel";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 
+import { ProductsContext } from "../../state/Products";
 import { ProductProps } from "./types";
 
 import "./Product.scss";
@@ -25,11 +26,15 @@ export default function ({
   categories,
   images,
 }: ProductProps) {
+  const value = useContext(ProductsContext);
+
   const [showProductDetails, setShowProductDetails] = useState(false);
 
   const handleToggleShowProductDetails = () => {
     setShowProductDetails((showProductDetails) => !showProductDetails);
   };
+
+  const handleSelectProduct = () => value?.handleSelectProduct(id);
 
   const isMobileView = useGetIsMobileScreenView();
 
@@ -52,7 +57,7 @@ export default function ({
             <Button onClick={handleToggleShowProductDetails}>
               Saznaj Vise
             </Button>
-            <Button>Dodaj</Button>
+            <Button onClick={handleSelectProduct}>Dodaj</Button>
           </div>
         </div>
       </div>
@@ -85,7 +90,7 @@ export default function ({
         </Card.Text>
         <div className="buttons-container">
           <Button>Saznaj Vise</Button>
-          <Button>Dodaj</Button>
+          <Button onClick={handleSelectProduct}>Dodaj</Button>
         </div>
       </Card.Body>
     </Card>

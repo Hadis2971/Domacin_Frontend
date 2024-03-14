@@ -8,6 +8,8 @@ import Home from "./pages/Home/Home";
 import Shop from "./pages/Shop/Shop";
 import Articles from "./pages/Articles/Articles";
 
+import ProductsContext from "./state/Products";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const queryClient = new QueryClient();
@@ -40,7 +42,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ProductsContext>
+        <RouterProvider router={router} />
+      </ProductsContext>
     </QueryClientProvider>
   );
 }

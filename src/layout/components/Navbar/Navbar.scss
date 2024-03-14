@@ -24,7 +24,13 @@
   .shopping-cart-icon {
     color: $primary-color;
     font-size: 1.5em;
+    margin-right: 5px;
     cursor: pointer;
+  }
+
+  .number-of-selected-products {
+    color: $primary-color;
+    font-size: 1.5em;
   }
 
   a {
