@@ -3,7 +3,7 @@ import { useState, useCallback, useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import Offcanvas from "react-bootstrap/Offcanvas";
+
 import Image from "react-bootstrap/Image";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,21 +11,9 @@ import { faShoppingCart, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import { ProductsContext } from "../../../state/Products";
 import { useAuthUser, useLogoutUser } from "../../../http/useAuth";
-import { NavbarOffcanvasProps } from "./types";
+import NavbarOffcanvas from "./components/NavbarOffcanvas";
 
 import "./Navbar.scss";
-
-const NavbarOffcanvas = ({ show, handleClose }: NavbarOffcanvasProps) => (
-  <Offcanvas show={show} onHide={handleClose} placement="end">
-    <Offcanvas.Header closeButton>
-      <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-    </Offcanvas.Header>
-    <Offcanvas.Body>
-      Some text as placeholder. In real life you can have the elements you have
-      chosen. Like, text, images, lists, etc.
-    </Offcanvas.Body>
-  </Offcanvas>
-);
 
 export default function () {
   const value = useContext(ProductsContext);
@@ -35,8 +23,6 @@ export default function () {
   const { data } = useAuthUser();
 
   const [showOffcanvasSidebar, setShowOffcanvasSidebar] = useState(false);
-
-  console.log(value?.selectedProducts);
 
   const numberOfSelectedProducts = value?.selectedProducts
     ? Object.values(value.selectedProducts).reduce(
@@ -106,6 +92,11 @@ export default function () {
       <NavbarOffcanvas
         show={showOffcanvasSidebar}
         handleClose={closeOffcanvasSidebar}
+        getFormatedListOfSelectedProducts={
+          value?.getFormatedListOfSelectedProducts
+        }
+        handleSelectProduct={value?.handleSelectProduct}
+        handleDeselectProduct={value?.handleDeselectProduct}
       />
     </Navbar>
   );

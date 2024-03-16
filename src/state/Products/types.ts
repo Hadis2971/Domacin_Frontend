@@ -16,3 +16,9 @@ export type Product = {
 export type ProductsContextProps = {
   children: ReactNode;
 };
+
+export type GetFormatedListOfSelectedProductsReturnType = {
+  id: number;
+  name: string;
+  quantity: number;
+};

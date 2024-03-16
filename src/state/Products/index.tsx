@@ -1,6 +1,10 @@
 import { createContext, useState } from "react";
 
-import { Product, ProductsContextProps } from "./types";
+import {
+  Product,
+  ProductsContextProps,
+  GetFormatedListOfSelectedProductsReturnType,
+} from "./types";
 
 const mockProducts = [
   {
@@ -200,6 +204,7 @@ export const ProductsContext = createContext<{
   selectedProducts: Record<number, number>;
   handleSelectProduct: (productId: number) => void;
   handleDeselectProduct: (productId: number) => void;
+  getFormatedListOfSelectedProducts: () => GetFormatedListOfSelectedProductsReturnType[];
 } | null>(null);
 
 export default ({ children }: ProductsContextProps) => {
@@ -245,11 +250,33 @@ export default ({ children }: ProductsContextProps) => {
     setSelectedProducts(selectedProductsCopy);
   };
 
+  const getFormatedListOfSelectedProducts =
+    (): GetFormatedListOfSelectedProductsReturnType[] => {
+      const formatedList: GetFormatedListOfSelectedProductsReturnType[] = [];
+
+      Object.keys(selectedProducts).map((key) => {
+        const product: Product | undefined = listOfProducts.find(
+          (product) => product.id === Number(key)
+        );
+
+        if (product) {
+          formatedList.push({
+            id: product.id,
+            name: product.title,
+            quantity: selectedProducts[Number(key)],
+          });
+        }
+      });
+
+      return formatedList;
+    };
+
   const value = {
     listOfProducts,
     selectedProducts,
     handleSelectProduct,
     handleDeselectProduct,
+    getFormatedListOfSelectedProducts,
   };
 
   return (

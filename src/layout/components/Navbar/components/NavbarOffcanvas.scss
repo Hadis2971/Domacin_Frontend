@@ -1,0 +1,23 @@
+@import "../../../../index.scss";
+
+.NavbarOffcanvasProduct {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid $primary-color;
+  font-size: 1.3em;
+
+  .product-quantity {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    svg {
+      color: $primary-color;
+      cursor: pointer;
+    }
+  }
+}
