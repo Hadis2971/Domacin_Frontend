@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from "react";
+import { useState, useCallback, useContext, useMemo } from "react";
 
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -24,12 +24,18 @@ export default function () {
 
   const [showOffcanvasSidebar, setShowOffcanvasSidebar] = useState(false);
 
-  const numberOfSelectedProducts = value?.selectedProducts
-    ? Object.values(value.selectedProducts).reduce(
-        (curr, acc) => (acc += curr),
-        0
-      )
-    : null;
+  const numberOfSelectedProducts = useMemo(() => {
+    let result = 0;
+    const valuesIterator = value?.selectedProducts.values();
+    let nextValue = valuesIterator?.next().value;
+
+    while (valuesIterator && nextValue) {
+      result += nextValue;
+      nextValue = valuesIterator?.next().value;
+    }
+
+    return result;
+  }, [value?.selectedProducts]);
 
   const openOffcanvasSidebar = useCallback(
     () => setShowOffcanvasSidebar(true),

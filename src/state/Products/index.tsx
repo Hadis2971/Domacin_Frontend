@@ -201,9 +201,10 @@ const mockProducts = [
 
 export const ProductsContext = createContext<{
   listOfProducts: Product[];
-  selectedProducts: Record<number, number>;
-  handleSelectProduct: (productId: number) => void;
-  handleDeselectProduct: (productId: number) => void;
+  //selectedProducts: Record<number, number>;
+  selectedProducts: Map<Product | undefined, number>;
+  handleSelectProduct: (id: number) => void;
+  handleDeselectProduct: (id: number) => void;
   getFormatedListOfSelectedProducts: () => GetFormatedListOfSelectedProductsReturnType[];
 } | null>(null);
 
@@ -211,40 +212,63 @@ export default ({ children }: ProductsContextProps) => {
   const [listOfProducts, setListOfProducts] = useState(mockProducts);
 
   const [selectedProducts, setSelectedProducts] = useState<
-    Record<number, number>
-  >({});
+    Map<Product | undefined, number>
+  >(new Map<Product | undefined, number>());
 
-  const handleSelectProduct = (productId: number) => {
-    const selectedProductsCopy = { ...selectedProducts };
-    const foundID = Object.keys(selectedProductsCopy).find(
-      (key) => Number(key) === productId
-    );
+  const handleSelectProduct = (id: number) => {
+    const selectedProductsCopy = new Map(selectedProducts);
+    const product = listOfProducts.find((product) => product.id === id);
 
-    if (foundID) {
-      selectedProductsCopy[Number(foundID)] = ++selectedProductsCopy[
-        Number(foundID)
-      ];
-    } else {
-      selectedProductsCopy[productId] = 1;
+    console.log(selectedProductsCopy);
+    if (!product) return;
+
+    const productCount = selectedProductsCopy.get(product);
+
+    if (product && productCount && product.stock! <= productCount) return;
+
+    if (!productCount) selectedProductsCopy.set(product, 1);
+    else {
+      const count = selectedProductsCopy.get(product) || 0;
+      selectedProductsCopy.set(product, count + 1);
     }
+
+    // const foundID = Object.keys(selectedProductsCopy).find(
+    //   (key) => Number(key) === productId
+    // );
+
+    // const product = listOfProducts.find(({ id }) => id === productId);
+    // if (product?.stock === selectedProductsCopy.get(product)) return;
+
+    // selectedProductsCopy.set(product, 2);
+
+    // if (foundID) {
+
+    //   selectedProductsCopy[Number(foundID)] = ++selectedProductsCopy[
+    //     Number(foundID)
+    //   ];
+    // } else {
+    //   //selectedProductsCopy[productId] = 1;
+
+    //   selectedProductsCopy.set(product, 1)
+    // }
 
     console.log("selectedProductsCopy", selectedProductsCopy);
 
     setSelectedProducts(selectedProductsCopy);
   };
 
-  const handleDeselectProduct = (productId: number) => {
-    const selectedProductsCopy = { ...selectedProducts };
-    const foundID = Object.keys(selectedProductsCopy).find(
-      (key) => Number(key) === productId
-    );
+  const handleDeselectProduct = (id: number) => {
+    const selectedProductsCopy = new Map(selectedProducts);
+    const product = listOfProducts.find((product) => product.id === id);
 
-    if (foundID) {
-      if (selectedProductsCopy[Number(foundID)] > 1)
-        --selectedProductsCopy[Number(foundID)];
-      else delete selectedProductsCopy[Number(foundID)];
-    } else {
-      return;
+    if (!product) return;
+
+    const productCount = selectedProductsCopy.get(product);
+
+    if (productCount && productCount <= 1) selectedProductsCopy.delete(product);
+    else {
+      const count = selectedProductsCopy.get(product) || 0;
+      selectedProductsCopy.set(product, count - 1);
     }
 
     setSelectedProducts(selectedProductsCopy);
@@ -254,19 +278,20 @@ export default ({ children }: ProductsContextProps) => {
     (): GetFormatedListOfSelectedProductsReturnType[] => {
       const formatedList: GetFormatedListOfSelectedProductsReturnType[] = [];
 
-      Object.keys(selectedProducts).map((key) => {
-        const product: Product | undefined = listOfProducts.find(
-          (product) => product.id === Number(key)
-        );
+      const iterator = selectedProducts.entries();
+      let nextValue = iterator.next().value;
 
-        if (product) {
-          formatedList.push({
-            id: product.id,
-            name: product.title,
-            quantity: selectedProducts[Number(key)],
-          });
-        }
-      });
+      while (nextValue) {
+        const [product, count] = nextValue;
+
+        formatedList.push({
+          id: product.id,
+          name: product.title,
+          quantity: count,
+        });
+
+        nextValue = iterator.next().value;
+      }
 
       return formatedList;
     };
