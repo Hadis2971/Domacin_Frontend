@@ -232,28 +232,6 @@ export default ({ children }: ProductsContextProps) => {
       selectedProductsCopy.set(product, count + 1);
     }
 
-    // const foundID = Object.keys(selectedProductsCopy).find(
-    //   (key) => Number(key) === productId
-    // );
-
-    // const product = listOfProducts.find(({ id }) => id === productId);
-    // if (product?.stock === selectedProductsCopy.get(product)) return;
-
-    // selectedProductsCopy.set(product, 2);
-
-    // if (foundID) {
-
-    //   selectedProductsCopy[Number(foundID)] = ++selectedProductsCopy[
-    //     Number(foundID)
-    //   ];
-    // } else {
-    //   //selectedProductsCopy[productId] = 1;
-
-    //   selectedProductsCopy.set(product, 1)
-    // }
-
-    console.log("selectedProductsCopy", selectedProductsCopy);
-
     setSelectedProducts(selectedProductsCopy);
   };
 

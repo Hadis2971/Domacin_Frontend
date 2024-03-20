@@ -4,6 +4,7 @@ import Image from "react-bootstrap/Image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
+import ImageLoading from "../../../ImageLoading";
 import { ImagesCarouselProps, ImagesCarouselPropsState } from "../../types";
 
 import "./ImagesCarousel.scss";
@@ -111,7 +112,7 @@ export default function ImagesCarousel({ id, images }: ImagesCarouselProps) {
     <div className="ImagesCarousel">
       <div className="current-image-container">
         {images && images[currentImage] ? (
-          <Image src={images[currentImage]} />
+          <ImageLoading url={images[currentImage]} />
         ) : null}
       </div>
       <div className="images-carousel-container">
