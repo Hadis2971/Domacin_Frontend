@@ -1,6 +1,13 @@
+import { useContext } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import Button from "react-bootstrap/Button";
+import { useQueryClient } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+
+import { ProductsContext } from "../../../../state/Products";
+import { User } from "../../../../http/useAuth";
+import { useOrderProducts } from "../../../../http/useProducts";
 
 import { NavbarOffcanvasProps } from "../types";
 
@@ -13,9 +20,16 @@ export default function ({
   handleDeselectProduct,
   handleClose,
 }: NavbarOffcanvasProps) {
+  const value = useContext(ProductsContext);
+
   const products = getFormatedListOfSelectedProducts
     ? getFormatedListOfSelectedProducts()
     : [];
+
+  const handleGoToCheckout = () => {
+    handleClose();
+    value?.handleToggleDisplayCheckoutModal();
+  };
 
   return (
     <Offcanvas show={show} onHide={handleClose} placement="end">
@@ -47,6 +61,19 @@ export default function ({
             </div>
           </div>
         ))}
+
+        {products && products.length > 0 && (
+          <div className="d-grid gap-2">
+            <Button
+              size="lg"
+              variant="primary"
+              className="checkout-btn"
+              onClick={handleGoToCheckout}
+            >
+              Nastavi Do Checkout
+            </Button>
+          </div>
+        )}
       </Offcanvas.Body>
     </Offcanvas>
   );

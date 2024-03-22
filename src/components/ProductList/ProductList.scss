@@ -20,3 +20,13 @@
     padding: 0% 2%;
   }
 }
+
+.product-list-loading-container {
+  width: 100%;
+  min-height: 100vh !important;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

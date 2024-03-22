@@ -67,8 +67,6 @@ export default function ({
 
   const handleSetCurrentIndex = (idx: number | null) => setCurrentIndex(idx);
 
-  console.log(addedIndexes);
-
   return (
     <div className="Rating">
       {elements.map((element, idx) => (

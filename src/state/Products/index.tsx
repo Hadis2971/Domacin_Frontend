@@ -1,4 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+
+import { useGetProducts } from "../../http/useProducts";
 
 import {
   Product,
@@ -203,23 +205,39 @@ export const ProductsContext = createContext<{
   listOfProducts: Product[];
   //selectedProducts: Record<number, number>;
   selectedProducts: Map<Product | undefined, number>;
+  displayCheckoutModal: boolean;
+  handleToggleDisplayCheckoutModal: () => void;
   handleSelectProduct: (id: number) => void;
   handleDeselectProduct: (id: number) => void;
   getFormatedListOfSelectedProducts: () => GetFormatedListOfSelectedProductsReturnType[];
 } | null>(null);
 
 export default ({ children }: ProductsContextProps) => {
-  const [listOfProducts, setListOfProducts] = useState(mockProducts);
+  const { data } = useGetProducts();
+
+  const [listOfProducts, setListOfProducts] = useState(data);
+  const [displayCheckoutModal, setDisplayCheckoutModal] = useState(false);
+
+  useEffect(() => {
+    setListOfProducts(data);
+  }, [data]);
 
   const [selectedProducts, setSelectedProducts] = useState<
     Map<Product | undefined, number>
   >(new Map<Product | undefined, number>());
 
+  const handleToggleDisplayCheckoutModal = () => {
+    setDisplayCheckoutModal((displayCheckoutModal) => !displayCheckoutModal);
+  };
+
   const handleSelectProduct = (id: number) => {
     const selectedProductsCopy = new Map(selectedProducts);
-    const product = listOfProducts.find((product) => product.id === id);
+    const product = listOfProducts?.find(
+      (product: { id: number }) => product.id === id
+    );
 
-    console.log(selectedProductsCopy);
+    console.log("product", product);
+
     if (!product) return;
 
     const productCount = selectedProductsCopy.get(product);
@@ -237,7 +255,9 @@ export default ({ children }: ProductsContextProps) => {
 
   const handleDeselectProduct = (id: number) => {
     const selectedProductsCopy = new Map(selectedProducts);
-    const product = listOfProducts.find((product) => product.id === id);
+    const product = listOfProducts?.find(
+      (product: { id: number }) => product.id === id
+    );
 
     if (!product) return;
 
@@ -264,7 +284,7 @@ export default ({ children }: ProductsContextProps) => {
 
         formatedList.push({
           id: product.id,
-          name: product.title,
+          name: product.name,
           quantity: count,
         });
 
@@ -277,9 +297,11 @@ export default ({ children }: ProductsContextProps) => {
   const value = {
     listOfProducts,
     selectedProducts,
+    displayCheckoutModal,
     handleSelectProduct,
     handleDeselectProduct,
     getFormatedListOfSelectedProducts,
+    handleToggleDisplayCheckoutModal,
   };
 
   return (

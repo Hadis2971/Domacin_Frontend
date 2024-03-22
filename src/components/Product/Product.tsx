@@ -17,12 +17,11 @@ import "./Product.scss";
 
 export default function ({
   id,
-  title,
+  name,
   shortDescription,
   longDescription,
   price,
   stock,
-  quantity,
   categories,
   images,
 }: ProductProps) {
@@ -34,7 +33,17 @@ export default function ({
     setShowProductDetails((showProductDetails) => !showProductDetails);
   };
 
-  const handleSelectProduct = () => value?.handleSelectProduct(id);
+  //console.log("value", value, value?.handleSelectProduct);
+
+  const handleSelectProduct = () => {
+    console.log("WHAT");
+    value?.handleSelectProduct(id);
+  };
+
+  // console.log(
+  //   "handleSelectProducthandleSelectProducthandleSelectProduct",
+  //   handleSelectProduct
+  // );
 
   const isMobileView = useGetIsMobileScreenView();
 
@@ -43,7 +52,7 @@ export default function ({
       <div className="inner-container">
         <ImagesCarousel id={id} images={images} />
         <div className="info-container">
-          <h1>{title}</h1>
+          <h1>{name}</h1>
 
           <h2 className="price">{price}KM</h2>
           <div className="stock">{`Raspolozivost: ${stock}`}</div>
@@ -82,7 +91,7 @@ export default function ({
       )}
 
       <Card.Body>
-        <Card.Title>{title}</Card.Title>
+        <Card.Title>{name}</Card.Title>
         <Card.Text>
           {shortDescription?.length > 20
             ? `${shortDescription.slice(0, 60)}...`
@@ -105,7 +114,7 @@ export default function ({
           images={images}
           shortDescription={shortDescription}
           longDescription={longDescription}
-          title={title}
+          name={name}
           id={id}
           price={price}
           onClose={() => setShowProductDetails(false)}

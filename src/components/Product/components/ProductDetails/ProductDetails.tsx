@@ -26,12 +26,11 @@ const SECTIONS = {
 
 export default function ProductDetails({
   id,
-  title,
+  name,
   shortDescription,
   longDescription,
   price,
   stock,
-  quantity,
   categories,
   images,
   onClose,
@@ -43,7 +42,7 @@ export default function ProductDetails({
   return (
     <Modal show size="xl" id="ProductDetails" onHide={onClose}>
       <Modal.Header className="header">
-        <h1>{title}</h1>
+        <h1>{name}</h1>
         <FontAwesomeIcon
           icon={faClose}
           className="close-icon"

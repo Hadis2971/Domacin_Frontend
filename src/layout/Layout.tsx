@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { Outlet, useLocation } from "react-router-dom";
@@ -5,7 +6,10 @@ import { styled } from "styled-components";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
+import CheckoutModal from "./components/CheckoutModal/CheckoutModal";
 import useGetIsCurrentRoute from "../hooks/useGetIsCurrentRoute";
+
+import { ProductsContext } from "../state/Products";
 
 import "./Layout.scss";
 
@@ -37,6 +41,7 @@ const getPageHeadingTitle = (pathname: string): string | null => {
 
 export default function () {
   const { pathname } = useLocation();
+  const value = useContext(ProductsContext);
 
   const headingTitle = getPageHeadingTitle(pathname);
   const isHomePage = useGetIsCurrentRoute("/");
@@ -63,6 +68,8 @@ export default function () {
       <Row>
         <Footer />
       </Row>
+
+      {value?.displayCheckoutModal && <CheckoutModal />}
     </Container>
   );
 }

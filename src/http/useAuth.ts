@@ -8,10 +8,13 @@ type AuthPayload = {
   password: string;
 };
 
+export type User = {
+  id: number;
+  username: string;
+};
+
 export const useRegisterUser = () => {
   const mutationFn = (user: AuthPayload) => {
-    console.log(user);
-
     return axios.post("http://127.0.0.1:5000/register", user, {
       headers: {
         "Content-Type": "application/json",
@@ -44,9 +47,7 @@ export const useLoginUser = () => {
   const mutation = useMutation({
     mutationFn,
     onSuccess: (response) => {
-      console.log(response);
-
-      const user = jwtDecode(response.data);
+      const user = jwtDecode(response.data) as User;
 
       queryClient.setQueryData(["user"], user);
 
