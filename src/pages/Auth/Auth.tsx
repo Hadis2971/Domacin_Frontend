@@ -20,9 +20,13 @@ export default function () {
 
   const [isRegisterUser, setIsRegisterUser] = useState(true);
   const [userCredentials, setUserCredentials] = useState({
+    firstName: "",
+    lastName: "",
+    address: "",
     username: "",
     password: "",
   });
+  const [isInvalid, setIsInvalid] = useState(false);
 
   useEffect(() => {
     if (isRegisterSuccess) setIsRegisterUser(false);
@@ -38,15 +42,25 @@ export default function () {
   };
 
   const handleRegisterUser = () => {
-    if (!userCredentials.username || !userCredentials.password) return;
-
-    registerUser(userCredentials);
+    if (
+      !userCredentials.firstName ||
+      !userCredentials.lastName ||
+      !userCredentials.username ||
+      !userCredentials.address ||
+      !userCredentials.password
+    ) {
+      setIsInvalid(true);
+    } else {
+      registerUser(userCredentials);
+    }
   };
 
   const handleLoginUser = () => {
-    if (!userCredentials.username || !userCredentials.password) return;
-
-    loginUser(userCredentials);
+    if (!userCredentials.username || !userCredentials.password) {
+      setIsInvalid(true);
+    } else {
+      loginUser(userCredentials);
+    }
   };
 
   const toggleRegisterLogin = () => {
@@ -78,17 +92,68 @@ export default function () {
           <>
             <FloatingLabel
               controlId="floatingInput"
-              label="Korisnicko ime ili email adresa"
+              label="Email adresa"
               className="mb-3"
             >
               <Form.Control
-                type="email"
-                placeholder="Korisnicko ime ili email adresa"
+                type="username"
+                placeholder="Email adresa"
                 name="username"
                 value={userCredentials.username}
                 onChange={handleChangeUserCredentials}
+                required
+                isInvalid={isInvalid && !userCredentials.username}
               />
             </FloatingLabel>
+            {isRegisterUser && (
+              <>
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Vase Ime"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Vase Ime"
+                    name="firstName"
+                    value={userCredentials.firstName}
+                    onChange={handleChangeUserCredentials}
+                    required
+                    isInvalid={isInvalid && !userCredentials.firstName}
+                  />
+                </FloatingLabel>
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Vase Prezime"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Vase Prezime"
+                    name="lastName"
+                    value={userCredentials.lastName}
+                    onChange={handleChangeUserCredentials}
+                    required
+                    isInvalid={isInvalid && !userCredentials.lastName}
+                  />
+                </FloatingLabel>
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Vasa Adresa"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Vasa Adresa"
+                    name="address"
+                    value={userCredentials.address}
+                    onChange={handleChangeUserCredentials}
+                    required
+                    isInvalid={isInvalid && !userCredentials.address}
+                  />
+                </FloatingLabel>
+              </>
+            )}
             <FloatingLabel controlId="floatingPassword" label="Sifra">
               <Form.Control
                 type="password"
@@ -96,6 +161,8 @@ export default function () {
                 name="password"
                 value={userCredentials.password}
                 onChange={handleChangeUserCredentials}
+                required
+                isInvalid={isInvalid && !userCredentials.password}
               />
             </FloatingLabel>
           </>

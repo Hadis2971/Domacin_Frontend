@@ -1,6 +1,20 @@
 @import "../../../index.scss";
 
 .CheckoutModalContent {
+  .checkout-user-info {
+    padding: 10px;
+    color: $text-main-color;
+    margin: 15px 0px;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: $text-main-color;
+      padding: 5px;
+    }
+  }
+
   .product-container {
     display: flex;
     align-items: center;
@@ -18,5 +32,19 @@
     outline: none;
     border: none;
     color: #fff;
+  }
+
+  .success-checkout-msg,
+  .fail-checkout-msg {
+    font-size: 1.3em;
+    padding: 20px 0px;
+  }
+
+  .success-checkout-msg {
+    color: green;
+  }
+
+  .fail-checkout-msg {
+    color: red;
   }
 }

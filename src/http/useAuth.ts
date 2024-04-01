@@ -3,7 +3,15 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-type AuthPayload = {
+type RegisterPayload = {
+  username: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  password: string;
+};
+
+type LoginPayload = {
   username: string;
   password: string;
 };
@@ -11,11 +19,15 @@ type AuthPayload = {
 export type User = {
   id: number;
   username: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  password: string;
 };
 
 export const useRegisterUser = () => {
-  const mutationFn = (user: AuthPayload) => {
-    return axios.post("http://127.0.0.1:5000/register", user, {
+  const mutationFn = (user: RegisterPayload) => {
+    return axios.post("http://127.0.0.1:5000/auth/register", user, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -36,8 +48,8 @@ export const useLoginUser = () => {
 
   const navigate = useNavigate();
 
-  const mutationFn = (user: AuthPayload) => {
-    return axios.post("http://127.0.0.1:5000/login", user, {
+  const mutationFn = (user: LoginPayload) => {
+    return axios.post("http://127.0.0.1:5000/auth/login", user, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -63,7 +75,7 @@ export const useLoginUser = () => {
 export const useAuthUser = () => {
   const queryClient = useQueryClient();
 
-  type GetAuthUserType = AuthPayload | null | undefined;
+  type GetAuthUserType = RegisterPayload | null | undefined;
 
   const getAuthUser = async (): Promise<GetAuthUserType> =>
     await queryClient.getQueryData(["user"]);

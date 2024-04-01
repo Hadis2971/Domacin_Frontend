@@ -10,6 +10,10 @@ type ProductOrderTyoe = {
 
 type UseOrderProductsParamsType = {
   userId: number;
+  firstName: string;
+  lastName: string;
+  address: string;
+  email: string;
   order: ProductOrderTyoe[];
 };
 
@@ -19,7 +23,7 @@ type UseGetProductsReturnType = {
 
 export const useGetProducts = () => {
   const queryFn = async () => {
-    const res = await axios.get("http://127.0.0.1:5000/products");
+    const res = await axios.get("http://127.0.0.1:5000/products/");
 
     return res.data;
   };
@@ -34,10 +38,17 @@ export const useGetProducts = () => {
 };
 
 export const useOrderProducts = () => {
-  const mutationFn = ({ userId, order }: UseOrderProductsParamsType) => {
+  const mutationFn = ({
+    userId,
+    firstName,
+    lastName,
+    address,
+    email,
+    order,
+  }: UseOrderProductsParamsType) => {
     return axios.post(
-      "http://127.0.0.1:5000/order",
-      { userId, order },
+      "http://127.0.0.1:5000/products/order",
+      { userId, firstName, lastName, address, email, order },
       {
         headers: {
           "Content-Type": "application/json",

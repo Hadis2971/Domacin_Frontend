@@ -209,6 +209,10 @@ export const ProductsContext = createContext<{
   handleToggleDisplayCheckoutModal: () => void;
   handleSelectProduct: (id: number) => void;
   handleDeselectProduct: (id: number) => void;
+  handleSetSelectedProductQuantity: (
+    id: number,
+    quantity: number | undefined
+  ) => void;
   getFormatedListOfSelectedProducts: () => GetFormatedListOfSelectedProductsReturnType[];
 } | null>(null);
 
@@ -272,6 +276,29 @@ export default ({ children }: ProductsContextProps) => {
     setSelectedProducts(selectedProductsCopy);
   };
 
+  const handleSetSelectedProductQuantity = (
+    id: number,
+    quanity: number | undefined = 0
+  ) => {
+    if (id || quanity) return;
+
+    const selectedProductsCopy = new Map(selectedProducts);
+    const product = listOfProducts?.find(
+      (product: { id: number }) => product.id === id
+    );
+
+    if (!product) return;
+
+    const productCount = selectedProductsCopy.get(product);
+
+    if (productCount && productCount < quanity) {
+      selectedProductsCopy.set(product, quanity);
+      setSelectedProducts(selectedProductsCopy);
+    } else {
+      return;
+    }
+  };
+
   const getFormatedListOfSelectedProducts =
     (): GetFormatedListOfSelectedProductsReturnType[] => {
       const formatedList: GetFormatedListOfSelectedProductsReturnType[] = [];
@@ -300,6 +327,7 @@ export default ({ children }: ProductsContextProps) => {
     displayCheckoutModal,
     handleSelectProduct,
     handleDeselectProduct,
+    handleSetSelectedProductQuantity,
     getFormatedListOfSelectedProducts,
     handleToggleDisplayCheckoutModal,
   };

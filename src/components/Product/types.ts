@@ -1,5 +1,6 @@
 export type ProductProps = {
   id: number;
+  skuCode: string;
   name: string;
   shortDescription: string;
   longDescription: string;
@@ -23,3 +24,22 @@ export type ImagesCarouselPropsState = {
 export type ProductDetailsProps = {
   onClose: () => void;
 } & ProductProps;
+
+export enum Categories {
+  Catgory1 = 1,
+  Catgory2,
+  Catgory3,
+  Catgory4,
+  Catgory5,
+  Catgory6,
+  Catgory7,
+  Catgory8,
+  Catgory9,
+  Catgory10,
+  Catgory11,
+  Catgory12,
+  Catgory13,
+  Catgory14,
+  Catgory15,
+  Catgory16,
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useMemo, useContext } from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -10,14 +10,18 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
+import { ProductsContext } from "../../../../state/Products";
+import { getProductCategories } from "../../Product";
 import RecensionForm from "./components/RecensionForm/RecensionForm";
 
 import { ProductDetailsProps } from "../../types";
 
 import "./ProductDetails.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+
+import { Product } from "../../../../state/Products/types";
 
 const SECTIONS = {
   LONG_DESCRIPTION: 1,
@@ -26,6 +30,7 @@ const SECTIONS = {
 
 export default function ProductDetails({
   id,
+  skuCode,
   name,
   shortDescription,
   longDescription,
@@ -35,9 +40,33 @@ export default function ProductDetails({
   images,
   onClose,
 }: ProductDetailsProps) {
+  const value = useContext(ProductsContext);
+
+  const product = value?.listOfProducts?.find((product) => product.id === id);
+  const productCount = value?.selectedProducts.get(product);
+
+  const [productQuanity, setProductQuanity] = useState(productCount);
+
   const [sectiodTodBeDisplayed, setSectionToBedisplayed] = useState(
     SECTIONS.LONG_DESCRIPTION
   );
+
+  const CategoriesString = useMemo(
+    () => getProductCategories(categories),
+    [categories]
+  );
+
+  const handleChangeProductQuantity = (
+    evt: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (Number(evt.target.value) >= Number(product?.stock)) return;
+
+    setProductQuanity(Number(evt.target.value));
+  };
+
+  const handleSetQuantity = () => {
+    value?.handleSetSelectedProductQuantity(id, productQuanity);
+  };
 
   return (
     <Modal show size="xl" id="ProductDetails" onHide={onClose}>
@@ -64,14 +93,20 @@ export default function ProductDetails({
             <Col lg={6} sm={12}>
               <div className="mb-3">
                 <div className="price mb-2">{`Cijena: ${price}KM`}</div>
+                <div className="skuCode mb-2">{skuCode}</div>
+                <div className="categories mb-2">{CategoriesString}</div>
                 <div className="description">{shortDescription}</div>
                 <div className="stock">{stock}</div>
               </div>
 
               <InputGroup className="mb-3">
-                <Form.Control type="number" />
+                <Form.Control
+                  type="number"
+                  value={productQuanity}
+                  onChange={handleChangeProductQuantity}
+                />
 
-                <Button>Dodaj</Button>
+                <Button onClick={handleSetQuantity}>Dodaj</Button>
               </InputGroup>
 
               <Dropdown className="mb-3">
@@ -85,13 +120,10 @@ export default function ProductDetails({
               </Dropdown>
 
               <div className="additional-info">
-                SKU: <span>dom-sir-387-0002-ba</span>
+                SKU: <span>{skuCode}</span>
               </div>
               <div className="additional-info">
-                Kategorija: <span>Slatko, Cookies</span>
-              </div>
-              <div className="additional-info">
-                Oznake: <span>cookies</span>
+                Kategorija: <span>{CategoriesString}</span>
               </div>
             </Col>
           </Row>

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useMemo } from "react";
 
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
@@ -10,13 +10,21 @@ import useGetIsMobileScreenView from "../../hooks/useGetIsMobileScreenView";
 import ImagesCarousel from "./components/ImagesCarousel/ImagesCarousel";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 
+import { Categories } from "./types";
 import { ProductsContext } from "../../state/Products";
 import { ProductProps } from "./types";
 
 import "./Product.scss";
 
+export const getProductCategories = (categories: number[] | undefined) => {
+  if (!categories) return null;
+
+  return categories.map((category) => Categories[category]).join(", ");
+};
+
 export default function ({
   id,
+  skuCode,
   name,
   shortDescription,
   longDescription,
@@ -28,6 +36,8 @@ export default function ({
   const value = useContext(ProductsContext);
 
   const [showProductDetails, setShowProductDetails] = useState(false);
+
+  const CategoriesString = useMemo(() => getProductCategories(categories), []);
 
   const handleToggleShowProductDetails = () => {
     setShowProductDetails((showProductDetails) => !showProductDetails);
@@ -57,10 +67,9 @@ export default function ({
           <h2 className="price">{price}KM</h2>
           <div className="stock">{`Raspolozivost: ${stock}`}</div>
           {categories && categories.length > 0 && (
-            <div className="category">{`Kategorije: ${categories?.join(
-              ","
-            )}`}</div>
+            <div className="category">{`Kategorije: ${CategoriesString}`}</div>
           )}
+          <div className="skuCode">{skuCode}</div>
           <div className="shortDescription">{shortDescription}</div>
           <div className="buttons-container">
             <Button onClick={handleToggleShowProductDetails}>
@@ -116,6 +125,7 @@ export default function ({
           longDescription={longDescription}
           name={name}
           id={id}
+          skuCode={skuCode}
           price={price}
           onClose={() => setShowProductDetails(false)}
         />

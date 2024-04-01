@@ -12,10 +12,15 @@ import "./CheckoutModal.scss";
 
 export default () => {
   const value = useContext(ProductsContext);
-  const { mutate, isLoading } = useOrderProducts();
+  const { mutate, isLoading, isSuccess, isError } = useOrderProducts();
 
-  const [userAddress, setUserAddress] = useState("");
-  const [userEmail, setUserEmail] = useState("");
+  const [orderUserInfo, setOrderUserInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    address: "",
+  });
+
   const [isInvalid, setIsInvalid] = useState(false);
 
   const queryClient = useQueryClient();
@@ -25,8 +30,15 @@ export default () => {
     ? value.getFormatedListOfSelectedProducts()
     : [];
 
+  console.log(user);
+
   const handleCheckout = () => {
-    if (!user || !userAddress || !userEmail) {
+    if (
+      !user &&
+      (!orderUserInfo.firstName ||
+        !orderUserInfo.lastName ||
+        !orderUserInfo.address)
+    ) {
       setIsInvalid(true);
     } else {
       const order = products.map((product) => ({
@@ -35,7 +47,11 @@ export default () => {
       }));
 
       mutate({
-        userId: user.id,
+        userId: user?.id,
+        firstName: user?.firstName || orderUserInfo.firstName,
+        lastName: user?.lastName || orderUserInfo.lastName,
+        address: user?.address || orderUserInfo.address,
+        email: user?.username || orderUserInfo.email,
         order,
       });
     }
@@ -44,8 +60,7 @@ export default () => {
   const handleInputChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.target;
 
-    if (name === "userAddress") setUserAddress(value);
-    else setUserEmail(value);
+    setOrderUserInfo((orderUserInfo) => ({ ...orderUserInfo, [name]: value }));
   };
 
   return (
@@ -62,26 +77,49 @@ export default () => {
         ))}
 
         {!!user ? (
-          <div>Address</div>
+          <div className="checkout-user-info">
+            <div>Vase Ime: {user.firstName}</div>
+            <div>Vase Prezime: {user.lastName}</div>
+            <div>Vasa Adresa: {user.address}</div>
+          </div>
         ) : (
           <>
             <Form.Control
               type="text"
-              placeholder="Vasa Adresa"
-              name="userAddress"
-              value={userAddress}
+              placeholder="Vase Ime"
+              name="firstName"
+              value={orderUserInfo.firstName}
               onChange={handleInputChange}
-              isInvalid={isInvalid && !userAddress}
+              isInvalid={isInvalid && !orderUserInfo.firstName}
+              className="mt-5"
+            />
+
+            <Form.Control
+              type="text"
+              placeholder="Vase Prezime"
+              name="lastName"
+              value={orderUserInfo.lastName}
+              onChange={handleInputChange}
+              isInvalid={isInvalid && !orderUserInfo.lastName}
+              className="mt-5"
+            />
+
+            <Form.Control
+              type="text"
+              placeholder="Vasa Adresa"
+              name="address"
+              value={orderUserInfo.address}
+              onChange={handleInputChange}
+              isInvalid={isInvalid && !orderUserInfo.address}
               className="mt-5"
             />
 
             <Form.Control
               type="text"
               placeholder="Vasa Email Adresa"
-              name="userEmail"
-              value={userEmail}
+              name="email"
+              value={orderUserInfo.email}
               onChange={handleInputChange}
-              isInvalid={isInvalid && !userEmail}
               className="mt-2"
             />
           </>
@@ -89,7 +127,6 @@ export default () => {
       </Modal.Body>
       <Modal.Footer className="CheckoutModalFooter">
         <Button
-          variant="secondary"
           disabled={isLoading}
           className="close-btn"
           onClick={value?.handleToggleDisplayCheckoutModal}
@@ -97,13 +134,24 @@ export default () => {
           Zatvori
         </Button>
         <Button
-          variant="primary"
           className="checkout-btn"
           disabled={isLoading}
           onClick={handleCheckout}
         >
           {isLoading ? "Ucitava" : "Naruci"}
         </Button>
+
+        {isSuccess && (
+          <div className="success-checkout-msg">
+            Narudzba je Uspjesno Poslana
+          </div>
+        )}
+
+        {isError && (
+          <div className="fail-checkout-msg">
+            Doslo je do Greske Pokusajte Malo Kasnije Ponovo
+          </div>
+        )}
       </Modal.Footer>
     </Modal>
   );
