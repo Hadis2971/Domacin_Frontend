@@ -16,16 +16,16 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { ProductsContext } from "../../../../state/Products";
 import { getProductCategories } from "../../Product";
 import RecensionForm from "./components/RecensionForm/RecensionForm";
+import RecensionsList from "./components/RecensionsList/RecensionsList";
 
 import { ProductDetailsProps } from "../../types";
 
 import "./ProductDetails.scss";
 
-import { Product } from "../../../../state/Products/types";
-
 const SECTIONS = {
   LONG_DESCRIPTION: 1,
   RECENSION: 2,
+  RECENSION_LIST: 3,
 };
 
 export default function ProductDetails({
@@ -38,6 +38,7 @@ export default function ProductDetails({
   stock,
   categories,
   images,
+  recensions,
   onClose,
 }: ProductDetailsProps) {
   const value = useContext(ProductsContext);
@@ -59,7 +60,11 @@ export default function ProductDetails({
   const handleChangeProductQuantity = (
     evt: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (Number(evt.target.value) >= Number(product?.stock)) return;
+    if (
+      Number(evt.target.value) > Number(product?.stock) ||
+      Number(evt.target.value) < 0
+    )
+      return;
 
     setProductQuanity(Number(evt.target.value));
   };
@@ -83,8 +88,8 @@ export default function ProductDetails({
           <Row>
             <Col lg={6} sm={12}>
               <Carousel className="carousel-container">
-                {images?.map((image) => (
-                  <Carousel.Item>
+                {images?.map((image, idx) => (
+                  <Carousel.Item key={`${image}-${idx}`}>
                     <Image src={image} className="image" />
                   </Carousel.Item>
                 ))}
@@ -92,9 +97,7 @@ export default function ProductDetails({
             </Col>
             <Col lg={6} sm={12}>
               <div className="mb-3">
-                <div className="price mb-2">{`Cijena: ${price}KM`}</div>
-                <div className="skuCode mb-2">{skuCode}</div>
-                <div className="categories mb-2">{CategoriesString}</div>
+                <div className="price mb-1">{`Cijena: ${price}KM`}</div>
                 <div className="description">{shortDescription}</div>
                 <div className="stock">{stock}</div>
               </div>
@@ -123,7 +126,7 @@ export default function ProductDetails({
                 SKU: <span>{skuCode}</span>
               </div>
               <div className="additional-info">
-                Kategorija: <span>{CategoriesString}</span>
+                Kategorije: <span>{CategoriesString}</span>
               </div>
             </Col>
           </Row>
@@ -150,6 +153,16 @@ export default function ProductDetails({
                 }`}
                 onClick={() => setSectionToBedisplayed(SECTIONS.RECENSION)}
               >
+                Dodaj Recenziju
+              </Button>
+              <Button
+                className={`section-btns ${
+                  sectiodTodBeDisplayed === SECTIONS.RECENSION_LIST
+                    ? "active-section-btn"
+                    : ""
+                }`}
+                onClick={() => setSectionToBedisplayed(SECTIONS.RECENSION_LIST)}
+              >
                 Recenzije
               </Button>
             </Col>
@@ -159,10 +172,13 @@ export default function ProductDetails({
             <Row className="mt-2">
               <Col sm={12}>
                 {sectiodTodBeDisplayed === SECTIONS.RECENSION && (
-                  <RecensionForm />
+                  <RecensionForm productId={id} />
                 )}
                 {sectiodTodBeDisplayed === SECTIONS.LONG_DESCRIPTION && (
                   <div className="description">{longDescription}</div>
+                )}
+                {sectiodTodBeDisplayed === SECTIONS.RECENSION_LIST && (
+                  <RecensionsList recensions={recensions} />
                 )}
               </Col>
             </Row>

@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+import { Recension } from "../../components/Product/components/ProductDetails/components/RecensionsList/types";
+
 export type Product = {
   id: number;
   skuCode: string;
@@ -8,7 +10,7 @@ export type Product = {
   longDescription: string;
   price: number;
   stock?: number;
-  recension?: number;
+  recensions: Recension[] | [];
   images: string[];
   categories?: number[];
 };

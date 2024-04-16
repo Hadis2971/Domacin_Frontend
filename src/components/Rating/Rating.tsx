@@ -10,6 +10,7 @@ const ElementContainer = styled.div<{
   $elementSize: string;
   $elementSelectedColor: string;
   $currentIndex: number | null;
+  $disabled: boolean | undefined;
 }>`
   color: ${(props) =>
     props.$isSelected ? props.$elementSelectedColor : "#b3b3b3"};
@@ -17,7 +18,7 @@ const ElementContainer = styled.div<{
   transition: color 0.2s linear;
 
   &:hover {
-    color: ${(props) => props.$elementSelectedColor};
+    color: ${(props) => (props.$disabled ? null : props.$elementSelectedColor)};
   }
 
   ${(props) => {
@@ -42,9 +43,20 @@ export default function ({
   element,
   elementSize,
   elementSelectedColor,
+  ratingNumber,
+  disabled,
+  onSelect,
 }: RatingProps) {
-  const [addedIndexes, setAddedIndexes] = useState<number[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const selectedIndexes = ratingNumber
+    ? Array(ratingNumber)
+        .fill(0)
+        .map((_, idx) => idx)
+    : [];
+
+  const [addedIndexes, setAddedIndexes] = useState<number[]>(selectedIndexes);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(
+    ratingNumber || null
+  );
 
   const elements = useMemo(() => {
     const elements = [];
@@ -57,15 +69,23 @@ export default function ({
   }, [element]);
 
   const handleSelectRating = (idx: number) => {
+    if (disabled) return;
+
     if (addedIndexes.includes(idx)) {
       if (addedIndexes.length <= 1) setAddedIndexes([]);
       else setAddedIndexes(addedIndexes.filter((i) => i <= idx));
     } else {
       setAddedIndexes(Array.from({ length: idx + 1 }, (_, i) => i));
     }
+
+    onSelect && onSelect(idx + 1);
   };
 
-  const handleSetCurrentIndex = (idx: number | null) => setCurrentIndex(idx);
+  const handleSetCurrentIndex = (idx: number | null) => {
+    if (disabled) return;
+
+    setCurrentIndex(idx);
+  };
 
   return (
     <div className="Rating">
@@ -75,6 +95,7 @@ export default function ({
           $elementSize={elementSize}
           $elementSelectedColor={elementSelectedColor}
           $currentIndex={currentIndex}
+          $disabled={disabled}
           className="element"
           key={idx}
           onClick={() => handleSelectRating(idx)}

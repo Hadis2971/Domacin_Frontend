@@ -27,7 +27,7 @@ export default function () {
       ) : (
         <div id="ProductList">
           {value?.listOfProducts?.map((product) => (
-            <Product {...product} />
+            <Product {...product} key={product.id} />
           ))}
         </div>
       )}

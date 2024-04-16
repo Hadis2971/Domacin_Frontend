@@ -1,3 +1,5 @@
+import { Recension } from "./components/ProductDetails/components/RecensionsList/types";
+
 export type ProductProps = {
   id: number;
   skuCode: string;
@@ -6,9 +8,9 @@ export type ProductProps = {
   longDescription: string;
   price: number;
   stock?: number;
-  recension?: number;
   images: string[];
   categories?: number[];
+  recensions: Recension[] | [];
 };
 
 export type ImagesCarouselProps = {

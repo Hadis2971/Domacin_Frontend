@@ -5,7 +5,7 @@ import "./Home.scss";
 export default function () {
   return (
     <div id="Home">
-      <h2>
+      <h2 className="home-title">
         U našoj ponudi možete pronaći samo 387 handmade proizvode. Podržimo male
         biznise kupovinom domaćeg. Kupujmo 387
       </h2>

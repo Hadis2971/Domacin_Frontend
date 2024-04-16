@@ -1,0 +1,43 @@
+@import "../../../../../../index.scss";
+
+.RecensionsList {
+  min-height: 200px;
+  max-height: 500px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  .recension-container {
+    margin-bottom: 20px;
+    color: $text-main-color;
+    border: 1px solid #ccc;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+      rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  }
+
+  .recension-title {
+    font-size: 1.8em;
+    padding: 10px;
+  }
+
+  .recension-description {
+    font-size: 1.5em;
+    line-height: 1.5em;
+    font-weight: 300;
+    padding: 10px;
+  }
+
+  .recension-email-rating {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+}
+
+.NoRecensionsListTitle {
+  font-weight: 300;
+  text-align: center;
+  margin: 30px 0px;
+}

@@ -1,25 +1,35 @@
 import axios from "axios";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
+import { Recension } from "../components/Product/components/ProductDetails/components/RecensionsList/types";
 import { Product } from "../state/Products/types";
 
-type ProductOrderTyoe = {
+type ProductOrderType = {
   id: number;
   quantity: number;
 };
 
 type UseOrderProductsParamsType = {
-  userId: number;
+  userId?: number;
   firstName: string;
   lastName: string;
   address: string;
   email: string;
-  order: ProductOrderTyoe[];
+  order: ProductOrderType[];
 };
 
-type UseGetProductsReturnType = {
-  data: Product[];
+type UseRecensionParamsType = {
+  userId?: number;
+  productId?: number;
+  title: string;
+  description: string;
+  email: string;
+  rating: number;
 };
+
+// type UseGetProductsReturnType = {
+//   data: Product[];
+// };
 
 export const useGetProducts = () => {
   const queryFn = async () => {
@@ -31,13 +41,14 @@ export const useGetProducts = () => {
   const query = useQuery({
     queryFn,
     queryKey: ["products"],
-    onSuccess: (res) => console.log(res),
   });
 
   return query;
 };
 
 export const useOrderProducts = () => {
+  const queryClient = useQueryClient();
+
   const mutationFn = ({
     userId,
     firstName,
@@ -59,7 +70,75 @@ export const useOrderProducts = () => {
 
   const mutation = useMutation({
     mutationFn,
-    onSuccess: (response) => console.log(response),
+    onSuccess: (response, variables) => {
+      const products = queryClient.getQueryData(["products"]) as Product[];
+
+      const updatedProducts = products.map((product) => {
+        const order = variables.order.find((order) => order.id === product.id);
+
+        if (order) {
+          console.log(order, product);
+          return {
+            ...product,
+            stock: Number(product.stock) - order.quantity,
+          };
+        } else {
+          return product;
+        }
+      });
+
+      queryClient.setQueryData(["products"], updatedProducts);
+    },
+    onError: (error) => console.log(error),
+  });
+
+  return mutation;
+};
+
+export const useRecension = () => {
+  const queryClient = useQueryClient();
+
+  const mutationFn = ({
+    title,
+    description,
+    rating,
+    email,
+    userId,
+    productId,
+  }: UseRecensionParamsType) => {
+    return axios.post(
+      "http://127.0.0.1:5000/products/recension",
+      { title, description, rating, email, userId, productId },
+      { headers: { "Content-Type": "application/json" } }
+    );
+  };
+
+  const mutation = useMutation({
+    mutationFn,
+    onSuccess: async (response, variables) => {
+      const products = (await queryClient.getQueryData([
+        "products",
+      ])) as Product[];
+
+      const updatedProducts = products.map((product) => {
+        if (product.id === variables.productId) {
+          if (!product.recensions) product.recensions = [];
+
+          const recension = {
+            title: variables.title,
+            description: variables.description,
+            rating: variables.rating,
+            email: variables.email,
+          } as Recension;
+
+          product.recensions = [...product.recensions, recension];
+        }
+
+        return product;
+      });
+
+      queryClient.setQueryData(["products"], updatedProducts);
+    },
     onError: (error) => console.log(error),
   });
 

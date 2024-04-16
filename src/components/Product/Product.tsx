@@ -31,8 +31,11 @@ export default function ({
   price,
   stock,
   categories,
+  recensions,
   images,
 }: ProductProps) {
+  if (!stock) return null;
+
   const value = useContext(ProductsContext);
 
   const [showProductDetails, setShowProductDetails] = useState(false);
@@ -43,22 +46,14 @@ export default function ({
     setShowProductDetails((showProductDetails) => !showProductDetails);
   };
 
-  //console.log("value", value, value?.handleSelectProduct);
-
   const handleSelectProduct = () => {
-    console.log("WHAT");
     value?.handleSelectProduct(id);
   };
-
-  // console.log(
-  //   "handleSelectProducthandleSelectProducthandleSelectProduct",
-  //   handleSelectProduct
-  // );
 
   const isMobileView = useGetIsMobileScreenView();
 
   const DesktopProductView = () => (
-    <div id="DesktopProductView">
+    <div className="DesktopProductView">
       <div className="inner-container">
         <ImagesCarousel id={id} images={images} />
         <div className="info-container">
@@ -83,11 +78,11 @@ export default function ({
   );
 
   const MobileProductView = () => (
-    <Card id="MobileProductView">
+    <Card className="MobileProductView">
       {images?.length > 0 ? (
         <Carousel>
-          {images.map((image) => (
-            <Carousel.Item>
+          {images.map((image, idx) => (
+            <Carousel.Item key={`${image}-${idx}`}>
               <Image src={image} />
             </Carousel.Item>
           ))}
@@ -127,6 +122,8 @@ export default function ({
           id={id}
           skuCode={skuCode}
           price={price}
+          categories={categories}
+          recensions={recensions}
           onClose={() => setShowProductDetails(false)}
         />
       )}

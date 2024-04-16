@@ -17,7 +17,7 @@ type LoginPayload = {
 };
 
 export type User = {
-  id: number;
+  id?: number;
   username: string;
   firstName: string;
   lastName: string;
@@ -75,7 +75,7 @@ export const useLoginUser = () => {
 export const useAuthUser = () => {
   const queryClient = useQueryClient();
 
-  type GetAuthUserType = RegisterPayload | null | undefined;
+  type GetAuthUserType = User | null | undefined;
 
   const getAuthUser = async (): Promise<GetAuthUserType> =>
     await queryClient.getQueryData(["user"]);

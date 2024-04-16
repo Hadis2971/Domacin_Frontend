@@ -38,7 +38,7 @@ export default function ({
       </Offcanvas.Header>
       <Offcanvas.Body>
         {products.map((product) => (
-          <div className="NavbarOffcanvasProduct">
+          <div className="NavbarOffcanvasProduct" key={product.id}>
             <div>{product.name}</div>
             <div className="product-quantity">
               <FontAwesomeIcon

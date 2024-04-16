@@ -1,17 +1,17 @@
 @import "../../index.scss";
 
-#DesktopProductView {
+.DesktopProductView {
+  width: 100%;
   height: fit-content;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #fff;
-  padding: 5%;
-  margin: 1%;
+  padding: 3%;
 
   .inner-container {
-    width: 120%;
+    width: 110%;
     position: relative;
-    right: 20%;
+    right: 10%;
     display: flex;
     align-items: center;
 
@@ -26,6 +26,14 @@
       h1 {
         margin-bottom: 0px;
         font-weight: 300;
+      }
+
+      .skuCode,
+      .price,
+      .stock,
+      .category,
+      .shortDescription {
+        font-size: 90%;
       }
 
       .skuCode,
@@ -55,11 +63,11 @@
   }
 }
 
-#DesktopProductView:nth-child(3n + 1):last-child {
+.DesktopProductView:nth-child(3n + 1):last-child {
   grid-column: 2 / span 1;
 }
 
-#MobileProductView.card {
+.MobileProductView.card {
   width: 18em;
   height: fit-content;
   margin: 1%;
@@ -78,7 +86,7 @@
 }
 
 @media (max-width: 980px) {
-  #MobileProductView.card {
+  .MobileProductView.card {
     width: 100%;
   }
 
@@ -95,8 +103,8 @@
   }
 }
 
-#DesktopProductView,
-#MobileProductView.card {
+.DesktopProductView,
+.MobileProductView.card {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 

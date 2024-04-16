@@ -3,4 +3,7 @@ export type RatingProps = {
   element: JSX.Element;
   elementSize: string;
   elementSelectedColor: string;
+  ratingNumber?: number;
+  disabled?: boolean;
+  onSelect?: (number: number) => void;
 };

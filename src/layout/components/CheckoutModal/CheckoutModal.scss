@@ -26,6 +26,8 @@
 }
 
 .CheckoutModalFooter {
+  display: block;
+
   .checkout-btn {
     background-color: $primary-color;
     box-shadow: none;

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -26,11 +26,13 @@ export default () => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(["user"]) as User;
 
+  useEffect(() => {
+    if (isSuccess) value?.handleDeselectAllProducts();
+  }, [isSuccess]);
+
   const products = value?.getFormatedListOfSelectedProducts
     ? value.getFormatedListOfSelectedProducts()
     : [];
-
-  console.log(user);
 
   const handleCheckout = () => {
     if (
@@ -64,13 +66,17 @@ export default () => {
   };
 
   return (
-    <Modal show={true} animation={false}>
+    <Modal
+      show={true}
+      animation={false}
+      onHide={value?.handleToggleDisplayCheckoutModal}
+    >
       <Modal.Header closeButton>
         <Modal.Title>Vasa Korpa</Modal.Title>
       </Modal.Header>
       <Modal.Body className="CheckoutModalContent">
         {products.map((product) => (
-          <div className="product-container">
+          <div className="product-container" key={product.id}>
             <div>Proizvod: {product.name}</div>
             <div>Kolicina: {product.quantity}</div>
           </div>
@@ -101,7 +107,7 @@ export default () => {
               value={orderUserInfo.lastName}
               onChange={handleInputChange}
               isInvalid={isInvalid && !orderUserInfo.lastName}
-              className="mt-5"
+              className="mt-2"
             />
 
             <Form.Control
@@ -111,7 +117,7 @@ export default () => {
               value={orderUserInfo.address}
               onChange={handleInputChange}
               isInvalid={isInvalid && !orderUserInfo.address}
-              className="mt-5"
+              className="mt-2"
             />
 
             <Form.Control
