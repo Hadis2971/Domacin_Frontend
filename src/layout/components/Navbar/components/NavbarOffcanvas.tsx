@@ -1,13 +1,10 @@
 import { useContext } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Button from "react-bootstrap/Button";
-import { useQueryClient } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 import { ProductsContext } from "../../../../state/Products";
-import { User } from "../../../../http/useAuth";
-import { useOrderProducts } from "../../../../http/useProducts";
 
 import { NavbarOffcanvasProps } from "../types";
 
@@ -32,9 +29,16 @@ export default function ({
   };
 
   return (
-    <Offcanvas show={show} onHide={handleClose} placement="end">
+    <Offcanvas
+      show={show}
+      onHide={handleClose}
+      placement="end"
+      id="NavbarOffcanvas"
+    >
       <Offcanvas.Header closeButton>
-        <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        <Offcanvas.Title className="NavbarOffcanvasTitle">
+          Vasa Korpa
+        </Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
         {products.map((product) => (
@@ -57,6 +61,7 @@ export default function ({
                     ? () => handleSelectProduct(product.id)
                     : undefined
                 }
+                color={product.quantity >= product.stock ? "grey" : "#e91e63"}
               />
             </div>
           </div>

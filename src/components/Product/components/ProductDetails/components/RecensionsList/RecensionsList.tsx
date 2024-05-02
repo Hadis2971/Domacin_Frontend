@@ -18,15 +18,22 @@ export default function RecensionsList({ recensions }: RecensionsListProps) {
   return (
     <div className="RecensionsList">
       {recensions.map((recension, idx) => {
-        if (!recension.title || !recension.description || !recension.email)
-          return;
+        if (
+          !recension.title ||
+          !recension.description ||
+          !recension.firstName ||
+          !recension.lastName
+        )
+          return null;
 
         return (
           <div className="recension-container" key={recension.id}>
             <div className="recension-title">{recension.title}</div>
             <div className="recension-description">{recension.description}</div>
-            <div className="recension-email-rating">
-              <div>{recension.email}</div>
+            <div className="recension-name-rating">
+              <div>
+                {recension.firstName} {recension.lastName}
+              </div>
               <div>
                 <Rating
                   ratingSpan={5}

@@ -23,4 +23,5 @@ export type GetFormatedListOfSelectedProductsReturnType = {
   id: number;
   name: string;
   quantity: number;
+  stock: number;
 };

@@ -23,7 +23,8 @@ type UseRecensionParamsType = {
   productId?: number;
   title: string;
   description: string;
-  email: string;
+  firstName: string;
+  lastName: string;
   rating: number;
 };
 
@@ -102,13 +103,14 @@ export const useRecension = () => {
     title,
     description,
     rating,
-    email,
+    firstName,
+    lastName,
     userId,
     productId,
   }: UseRecensionParamsType) => {
     return axios.post(
       "http://127.0.0.1:5000/products/recension",
-      { title, description, rating, email, userId, productId },
+      { title, description, rating, firstName, lastName, userId, productId },
       { headers: { "Content-Type": "application/json" } }
     );
   };
@@ -128,7 +130,8 @@ export const useRecension = () => {
             title: variables.title,
             description: variables.description,
             rating: variables.rating,
-            email: variables.email,
+            firstName: variables.firstName,
+            lastName: variables.lastName,
           } as Recension;
 
           product.recensions = [...product.recensions, recension];

@@ -22,7 +22,8 @@ export default function RecensionForm({ productId }: RecensionFormProps) {
     title: "",
     description: "",
     rating: 0,
-    email: data?.username || "",
+    firstName: data?.firstName || "",
+    lastName: data?.lastName || "",
   });
 
   const handleChangeFormData = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +49,8 @@ export default function RecensionForm({ productId }: RecensionFormProps) {
       title: "",
       description: "",
       rating: 0,
-      email: data?.username || "",
+      firstName: data?.firstName || "",
+      lastName: data?.lastName || "",
     });
   };
 
@@ -65,12 +67,22 @@ export default function RecensionForm({ productId }: RecensionFormProps) {
         />
       </FloatingLabel>
 
-      <FloatingLabel controlId="floatingEmail" label="Email" className="mb-3">
+      <FloatingLabel controlId="floatingEmail" label="Ime" className="mb-3">
         <Form.Control
           as="textarea"
-          placeholder="Korisnicko Ime ili Email Adresa"
-          name="email"
-          value={formData.email}
+          placeholder="Vase Ime"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChangeFormData}
+        />
+      </FloatingLabel>
+
+      <FloatingLabel controlId="floatingEmail" label="Prezime" className="mb-3">
+        <Form.Control
+          as="textarea"
+          placeholder="Vase Prezime"
+          name="lastName"
+          value={formData.lastName}
           onChange={handleChangeFormData}
         />
       </FloatingLabel>

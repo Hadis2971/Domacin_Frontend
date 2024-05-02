@@ -21,6 +21,12 @@
     width: 30%;
   }
 
+  @media (max-width: 991px) {
+    .navbar-nav {
+      align-items: flex-start;
+    }
+  }
+
   .shopping-cart-icon {
     color: $primary-color;
     font-size: 1.5em;

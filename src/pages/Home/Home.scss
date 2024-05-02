@@ -7,4 +7,10 @@
     text-align: center;
     margin: 3% auto;
   }
+
+  @media (max-width: 515px) {
+    .home-title {
+      font-size: 1.3em;
+    }
+  }
 }

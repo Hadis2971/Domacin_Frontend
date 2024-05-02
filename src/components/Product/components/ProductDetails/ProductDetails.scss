@@ -25,6 +25,12 @@
       height: 30em;
     }
 
+    @media (max-width: 991px) {
+      .carousel-inner {
+        height: auto;
+      }
+    }
+
     .image {
       width: 100%;
       height: 100%;
@@ -87,6 +93,12 @@
     border: none;
     background-color: #fff;
     color: $text-main-color;
+  }
+
+  @media (max-width: 991px) {
+    .section-btns {
+      width: 30%;
+    }
   }
 
   .active-section-btn::after {

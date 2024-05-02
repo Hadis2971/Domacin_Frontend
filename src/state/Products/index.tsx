@@ -122,10 +122,15 @@ export default ({ children }: ProductsContextProps) => {
       while (nextValue) {
         const [product, count] = nextValue;
 
+        const foundProduct = listOfProducts?.find(
+          ({ id }: Product) => product.id === id
+        );
+
         formatedList.push({
           id: product.id,
           name: product.name,
           quantity: count,
+          stock: foundProduct.stock,
         });
 
         nextValue = iterator.next().value;

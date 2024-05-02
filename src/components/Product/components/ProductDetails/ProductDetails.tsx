@@ -10,6 +10,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
+import Alert from "react-bootstrap/Alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
@@ -43,14 +44,22 @@ export default function ProductDetails({
 }: ProductDetailsProps) {
   const value = useContext(ProductsContext);
 
-  const product = value?.listOfProducts?.find((product) => product.id === id);
-  const productCount = value?.selectedProducts.get(product);
+  const product = useMemo(
+    () => value?.listOfProducts?.find((product) => product.id === id),
+    [id]
+  );
+  const productCount = useMemo(
+    () => value?.selectedProducts.get(product) || 0,
+    [id]
+  );
 
   const [productQuanity, setProductQuanity] = useState(productCount);
 
   const [sectiodTodBeDisplayed, setSectionToBedisplayed] = useState(
     SECTIONS.LONG_DESCRIPTION
   );
+
+  const [displayProductStock, setDisplayProductStock] = useState(false);
 
   const CategoriesString = useMemo(
     () => getProductCategories(categories),
@@ -63,10 +72,13 @@ export default function ProductDetails({
     if (
       Number(evt.target.value) > Number(product?.stock) ||
       Number(evt.target.value) < 0
-    )
+    ) {
+      setDisplayProductStock(true);
       return;
-
-    setProductQuanity(Number(evt.target.value));
+    } else {
+      setDisplayProductStock(false);
+      setProductQuanity(Number(evt.target.value));
+    }
   };
 
   const handleSetQuantity = () => {
@@ -99,7 +111,7 @@ export default function ProductDetails({
               <div className="mb-3">
                 <div className="price mb-1">{`Cijena: ${price}KM`}</div>
                 <div className="description">{shortDescription}</div>
-                <div className="stock">{stock}</div>
+                <div className="stock">Na Zalihama: {stock}</div>
               </div>
 
               <InputGroup className="mb-3">
@@ -111,6 +123,12 @@ export default function ProductDetails({
 
                 <Button onClick={handleSetQuantity}>Dodaj</Button>
               </InputGroup>
+
+              {displayProductStock && (
+                <Alert key={"warning"} variant={"warning"}>
+                  {`Trenutno stanje proizvoda ${name} je ${stock}`}
+                </Alert>
+              )}
 
               <Dropdown className="mb-3">
                 <Dropdown.Toggle>Odaberi Pakovanje</Dropdown.Toggle>

@@ -7,8 +7,9 @@ import Card from "react-bootstrap/Card";
 
 import useGetIsMobileScreenView from "../../hooks/useGetIsMobileScreenView";
 
-import ImagesCarousel from "./components/ImagesCarousel/ImagesCarousel";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
+import ImagesCarousel from "./components/ImagesCarousel/ImagesCarousel";
+import ImageLoading from "../ImageLoading";
 
 import { Categories } from "./types";
 import { ProductsContext } from "../../state/Products";
@@ -83,7 +84,7 @@ export default function ({
         <Carousel>
           {images.map((image, idx) => (
             <Carousel.Item key={`${image}-${idx}`}>
-              <Image src={image} />
+              <ImageLoading url={image} />
             </Carousel.Item>
           ))}
         </Carousel>
@@ -102,7 +103,7 @@ export default function ({
             : shortDescription}
         </Card.Text>
         <div className="buttons-container">
-          <Button>Saznaj Vise</Button>
+          <Button onClick={handleToggleShowProductDetails}>Saznaj Vise</Button>
           <Button onClick={handleSelectProduct}>Dodaj</Button>
         </div>
       </Card.Body>
@@ -122,6 +123,7 @@ export default function ({
           id={id}
           skuCode={skuCode}
           price={price}
+          stock={stock}
           categories={categories}
           recensions={recensions}
           onClose={() => setShowProductDetails(false)}

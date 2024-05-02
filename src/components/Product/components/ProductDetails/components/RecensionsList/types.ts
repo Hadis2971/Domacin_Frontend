@@ -3,7 +3,8 @@ export type Recension = {
   title: string;
   description: string;
   rating: number;
-  email: string;
+  firstName: string;
+  lastName: string;
 };
 
 export type RecensionsListProps = {
