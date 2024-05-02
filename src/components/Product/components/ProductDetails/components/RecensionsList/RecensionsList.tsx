@@ -28,22 +28,20 @@ export default function RecensionsList({ recensions }: RecensionsListProps) {
 
         return (
           <div className="recension-container" key={recension.id}>
+            <div className="recension-user-info">
+              {recension.firstName} {recension.lastName}
+            </div>
             <div className="recension-title">{recension.title}</div>
             <div className="recension-description">{recension.description}</div>
-            <div className="recension-name-rating">
-              <div>
-                {recension.firstName} {recension.lastName}
-              </div>
-              <div>
-                <Rating
-                  ratingSpan={5}
-                  ratingNumber={recension.rating}
-                  disabled={true}
-                  element={<FontAwesomeIcon icon={faStar} />}
-                  elementSize="1em"
-                  elementSelectedColor="#ffcc00"
-                />
-              </div>
+            <div className="recension-rating">
+              <Rating
+                ratingSpan={5}
+                ratingNumber={recension.rating}
+                disabled={true}
+                element={<FontAwesomeIcon icon={faStar} />}
+                elementSize="2em"
+                elementSelectedColor="#ffcc00"
+              />
             </div>
           </div>
         );

@@ -9,35 +9,40 @@
   .recension-container {
     margin-bottom: 20px;
     color: $text-main-color;
-    border: 1px solid #ccc;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-      rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    font-weight: 300;
+    border: 1px solid #f2f2f2;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .recension-user-info {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    color: $text-main-color;
   }
 
   .recension-title {
-    font-size: 1.8em;
-    padding: 10px;
+    font-size: 2.3em;
+    margin-bottom: 20px;
   }
 
   .recension-description {
-    font-size: 1.5em;
+    font-size: 1.2em;
     line-height: 1.5em;
-    font-weight: 300;
-    padding: 10px;
+    font-weight: 400;
+    color: $text-secondary-color;
   }
 
-  .recension-name-rating {
+  .recension-rating {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: end;
     margin-top: 20px;
-    padding: 10px;
-    border-top: 1px solid #ccc;
   }
 }
 
 .NoRecensionsListTitle {
   font-weight: 300;
+  color: $text-main-color;
   text-align: center;
   margin: 30px 0px;
 }
