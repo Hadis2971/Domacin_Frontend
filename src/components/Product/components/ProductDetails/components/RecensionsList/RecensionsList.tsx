@@ -29,7 +29,7 @@ export default function RecensionsList({ recensions }: RecensionsListProps) {
         return (
           <div className="recension-container" key={recension.id}>
             <div className="recension-user-info">
-              {recension.firstName} {recension.lastName}
+              Korisnik: {recension.firstName} {recension.lastName}
             </div>
             <div className="recension-title">{recension.title}</div>
             <div className="recension-description">{recension.description}</div>

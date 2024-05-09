@@ -1,0 +1,72 @@
+@import "../../index.scss";
+
+.Comments {
+  width: 98%;
+  min-height: 100px;
+  max-height: 600px;
+  overflow-y: auto;
+  margin: 20px auto;
+  border: 1px solid #f2f2f2;
+  padding: 20px;
+
+  .comment-open-close-container {
+    font-size: 1.5em;
+    cursor: pointer;
+
+    span {
+      margin-right: 5px;
+    }
+  }
+
+  .comments-inner-container {
+    color: #fff;
+    box-shadow: none;
+    outline: none;
+
+    input {
+      margin: 10px 0px;
+    }
+  }
+
+  .post-comment-btn-container {
+    text-align: right;
+
+    .post-comment-btn {
+      background-color: $primary-color;
+      color: #fff;
+      border: none;
+      box-shadow: none;
+      outline: none;
+    }
+
+    .post-comment-btn:hover,
+    .post-comment-btn:focus {
+      background-color: $primary-color;
+      color: #fff;
+      border: none;
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  .comment-container {
+    color: $text-main-color;
+    margin: 10px 0px;
+    padding: 10px;
+    border: 1px solid #f2f2f2;
+    font-weight: 300;
+
+    div:first-child {
+      font-size: 1.3em;
+      margin-bottom: 20px;
+    }
+
+    div:nth-child(2) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1em;
+      font-style: italic;
+    }
+  }
+}

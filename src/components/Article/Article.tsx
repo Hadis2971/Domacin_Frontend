@@ -1,40 +1,69 @@
+import { useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
+import { usePostArticleComment } from "../../http/useArticle";
+import { Categories } from "../Product/types";
 import { ArticleProps } from "./types";
+
+import Comments from "../Comments/Comments";
 
 import "./Article.scss";
 
+export const getArticleCategories = (categories: number[] | undefined) => {
+  if (!categories) return null;
+
+  return categories.map((category) => Categories[category]).join(", ");
+};
+
 export default function ({
+  id,
   title,
-  category,
+  categories,
   description,
-  author,
-  image,
+  firstName,
+  lastName,
+  images,
+  comments,
 }: ArticleProps) {
+  const { mutate, isLoading } = usePostArticleComment();
+
+  const CategoriesString = useMemo(
+    () => getArticleCategories(categories),
+    [categories]
+  );
+
   return (
     <div id="Article">
       <div id="header">
-        <h2>
-          {title} - {category}
-        </h2>
-        <h4>
+        <h3>{title}</h3>
+        <h5>
           Saznaj Vise <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-        </h4>
+        </h5>
       </div>
 
       <div id="inner-container">
         <div className="image-container">
-          <img src={image} />
+          <img src={images[0]} />
         </div>
 
         <div className="info-container">
-          <div className="description">
-            {description.slice(0, 600)} - Citaj Vise
+          <div className="description">{description.slice(0, 600)}</div>
+          <div className="categories-author-container">
+            <div className="categories-list">{`Kategorije: ${CategoriesString}`}</div>
+            <div>
+              Autor: {firstName} {lastName}
+            </div>
           </div>
-          <h4>Autor: {author}</h4>
         </div>
       </div>
+
+      <Comments
+        comments={comments}
+        id={id}
+        isLoading={isLoading}
+        onPostComment={mutate}
+      />
     </div>
   );
 }
