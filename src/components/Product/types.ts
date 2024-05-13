@@ -24,6 +24,7 @@ export type ImagesCarouselPropsState = {
 };
 
 export type ProductDetailsProps = {
+  averageRaiting: number;
   onClose: () => void;
 } & ProductProps;
 

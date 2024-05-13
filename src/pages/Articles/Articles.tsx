@@ -3,6 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ClipLoader from "react-spinners/ClipLoader";
 
+import SecondaryArticle from "../../components/Article/components/SecondaryArticle/SecondaryArticle";
 import Article from "../../components/Article/Article";
 import { useGetArticles } from "../../http/useArticle";
 import { Article as ArticleType } from "./type";
@@ -28,10 +29,17 @@ export default function () {
       ) : (
         <Row>
           <Col xl="7" lg="12">
-            {articles.map((article: ArticleType) => (
+            {articles.map((article: ArticleType, idx: number) => (
               <Article {...article} key={article.id} />
             ))}
+
+            <div className="secondary-articles-container">
+              {articles.map((article: ArticleType, idx: number) => (
+                <SecondaryArticle {...article} key={article.id} />
+              ))}
+            </div>
           </Col>
+
           <Col xl="5" lg="12">
             Hello World
           </Col>

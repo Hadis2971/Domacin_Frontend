@@ -1,6 +1,5 @@
 import { useState, useContext, useMemo } from "react";
 
-import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import Carousel from "react-bootstrap/Carousel";
 import Card from "react-bootstrap/Card";
@@ -53,6 +52,12 @@ export default function ({
 
   const isMobileView = useGetIsMobileScreenView();
 
+  const averageRaiting = useMemo(() => {
+    const raitings = recensions.map((recension) => recension.rating);
+
+    return raitings.reduce((acc, curr) => acc + curr, 0);
+  }, [recensions]);
+
   const DesktopProductView = () => (
     <div className="DesktopProductView">
       <div className="inner-container">
@@ -66,6 +71,11 @@ export default function ({
             <div className="category">{`Kategorije: ${CategoriesString}`}</div>
           )}
           <div className="skuCode">{skuCode}</div>
+          {!!averageRaiting ? (
+            <div className="average-raiting">Ocjena: {averageRaiting}</div>
+          ) : (
+            <div className="average-raiting">Bez Ocjene</div>
+          )}
           <div className="shortDescription">{shortDescription}</div>
           <div className="buttons-container">
             <Button onClick={handleToggleShowProductDetails}>
@@ -101,6 +111,8 @@ export default function ({
           {shortDescription?.length > 20
             ? `${shortDescription.slice(0, 60)}...`
             : shortDescription}
+
+          <div className="average-raiting">Ocjena: {averageRaiting}</div>
         </Card.Text>
         <div className="buttons-container">
           <Button onClick={handleToggleShowProductDetails}>Saznaj Vise</Button>
@@ -122,6 +134,7 @@ export default function ({
           name={name}
           id={id}
           skuCode={skuCode}
+          averageRaiting={averageRaiting}
           price={price}
           stock={stock}
           categories={categories}

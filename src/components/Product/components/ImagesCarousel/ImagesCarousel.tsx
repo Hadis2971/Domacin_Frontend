@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-
+import { styled } from "styled-components";
 import Image from "react-bootstrap/Image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +8,18 @@ import ImageLoading from "../../../ImageLoading";
 import { ImagesCarouselProps, ImagesCarouselPropsState } from "../../types";
 
 import "./ImagesCarousel.scss";
+
+const CurrentImageContainer = styled.div<{ $isSingleImage: boolean }>`
+  width: 200px;
+  height: ${(props) => (props.$isSingleImage ? "388.5px" : "300px")};
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
 
 function reducer(
   state: ImagesCarouselPropsState,
@@ -110,32 +122,37 @@ export default function ImagesCarousel({ id, images }: ImagesCarouselProps) {
 
   return (
     <div className="ImagesCarousel">
-      <div className="current-image-container">
+      <CurrentImageContainer $isSingleImage={images.length === 1}>
         {images && images[currentImage] ? (
           <ImageLoading url={images[currentImage]} />
         ) : null}
-      </div>
-      <div className="images-carousel-container">
-        <FontAwesomeIcon icon={faCaretLeft} onClick={handleGetPreviousImage} />
-        <div className="images-carousel">
-          {images?.map((image, idx) => {
-            return (
-              <div
-                className="next-image"
-                key={idx}
-                onClick={() => handleSetCurrentImage(idx)}
-              >
-                <Image
-                  src={image}
-                  className={currentImage === idx ? "active-image" : ""}
-                />
-              </div>
-            );
-          })}
-        </div>
+      </CurrentImageContainer>
+      {images.length > 1 && (
+        <div className="images-carousel-container">
+          <FontAwesomeIcon
+            icon={faCaretLeft}
+            onClick={handleGetPreviousImage}
+          />
+          <div className="images-carousel">
+            {images?.map((image, idx) => {
+              return (
+                <div
+                  className="next-image"
+                  key={idx}
+                  onClick={() => handleSetCurrentImage(idx)}
+                >
+                  <Image
+                    src={image}
+                    className={currentImage === idx ? "active-image" : ""}
+                  />
+                </div>
+              );
+            })}
+          </div>
 
-        <FontAwesomeIcon icon={faCaretRight} onClick={handleGetNextImage} />
-      </div>
+          <FontAwesomeIcon icon={faCaretRight} onClick={handleGetNextImage} />
+        </div>
+      )}
     </div>
   );
 }

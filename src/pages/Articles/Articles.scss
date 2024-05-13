@@ -7,3 +7,12 @@
   align-items: center;
   justify-content: center;
 }
+
+.secondary-articles-container {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 5%;
+  row-gap: 1%;
+  margin: auto;
+}

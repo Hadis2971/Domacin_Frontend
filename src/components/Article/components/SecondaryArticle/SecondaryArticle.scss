@@ -1,7 +1,6 @@
-@import "../../index.scss";
+@import "../../../../index.scss";
 
-.DesktopProductView {
-  width: 100%;
+.DesktopSecondaryArticleView {
   height: fit-content;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -23,52 +22,54 @@
       height: 100%;
       color: #404040;
 
-      h1 {
-        margin-bottom: 0px;
+      h5 {
+        margin-bottom: 10px;
         font-weight: 300;
       }
 
-      .skuCode,
-      .price,
-      .stock,
-      .category,
-      .average-raitingm .shortDescription {
-        font-size: 90%;
+      .category {
+        color: $primary-color;
       }
 
-      .skuCode,
-      .price,
-      .stock,
       .category,
-      .average-raiting {
-        color: $primary-color;
+      .description {
+        font-size: 90%;
         margin-bottom: 2%;
       }
 
-      .price {
-        font-size: 3em;
-        font-family: "Raleway", sans-serif;
-        font-style: italic;
-        text-align: left;
-      }
-
-      .shortDescription {
+      .description {
         width: 100%;
         display: -webkit-box;
         -webkit-line-clamp: 10;
         -webkit-box-orient: vertical;
+        color: $text-main-color;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      .author-name-container {
+        margin: 10px 0px;
+        text-align: right;
+        color: $text-main-color;
+        font-weight: 400;
+      }
+
+      .buttons-container {
+        width: 100%;
+
+        button {
+          width: 100%;
+        }
       }
     }
   }
 }
 
-.DesktopProductView:nth-child(3n + 1):last-child {
+.DesktopSecondaryArticleView:nth-child(3n + 1):last-child {
   grid-column: 2 / span 1;
 }
 
-.MobileProductView.card {
+.MobileSecondaryArticleView.card {
   width: 18em;
   height: fit-content;
   margin: 1%;
@@ -87,7 +88,7 @@
 }
 
 @media (max-width: 980px) {
-  .MobileProductView.card {
+  .MobileSecondaryArticleView.card {
     width: 100%;
   }
 
@@ -104,19 +105,14 @@
   }
 }
 
-.DesktopProductView,
-.MobileProductView.card {
+.DesktopSecondaryArticleView,
+.MobileSecondaryArticleView.card {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 
   .buttons-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 3%;
-
     button {
-      width: 49%;
+      width: 100%;
       border: none;
       outline: none;
     }

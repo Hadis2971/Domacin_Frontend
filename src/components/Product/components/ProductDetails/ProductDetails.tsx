@@ -33,6 +33,7 @@ export default function ProductDetails({
   id,
   skuCode,
   name,
+  averageRaiting,
   shortDescription,
   longDescription,
   price,
@@ -112,6 +113,7 @@ export default function ProductDetails({
                 <div className="price mb-1">{`Cijena: ${price}KM`}</div>
                 <div className="description">{shortDescription}</div>
                 <div className="stock">Na Zalihama: {stock}</div>
+                <div className="average-raiting">Ocjena: {averageRaiting}</div>
               </div>
 
               <InputGroup className="mb-3">
