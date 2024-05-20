@@ -28,6 +28,15 @@
         font-weight: 300;
       }
 
+      .category {
+        display: flex;
+        flex-wrap: wrap;
+
+        div {
+          margin-right: 5px;
+        }
+      }
+
       .skuCode,
       .price,
       .stock,
@@ -137,5 +146,23 @@
     button:nth-child(2) {
       background-color: $primary-color;
     }
+  }
+
+  .product-category-link {
+    text-decoration: none;
+    margin-right: 5px;
+    color: $primary-color;
+  }
+
+  .product-category-link::after {
+    content: ",";
+  }
+
+  .product-category-link:last-child {
+    margin-right: 0px;
+  }
+
+  .product-category-link:last-child:after {
+    content: "";
   }
 }

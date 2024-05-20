@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
 
 import { Recension } from "../components/Product/components/ProductDetails/components/RecensionsList/types";
 import { Product } from "../state/Products/types";
@@ -44,6 +45,25 @@ export const useGetProducts = () => {
   return query;
 };
 
+export const useGetProductsBasedOnCategory = () => {
+  const { category } = useParams();
+
+  const queryFn = async () => {
+    const res = await axios.get(
+      `http://127.0.0.1:5000/products/${category?.slice(1)}`
+    );
+
+    return res.data;
+  };
+
+  const query = useQuery({
+    queryFn,
+    queryKey: ["products", category],
+  });
+
+  return query;
+};
+
 export const useOrderProducts = () => {
   const queryClient = useQueryClient();
 
@@ -75,7 +95,6 @@ export const useOrderProducts = () => {
         const order = variables.order.find((order) => order.id === product.id);
 
         if (order) {
-          console.log(order, product);
           return {
             ...product,
             stock: Number(product.stock) - order.quantity,

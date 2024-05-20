@@ -146,7 +146,7 @@ export default function ProductDetails({
                 SKU: <span>{skuCode}</span>
               </div>
               <div className="additional-info">
-                Kategorije: <span>{CategoriesString}</span>
+                <div>Kategorije:</div> {CategoriesString}
               </div>
             </Col>
           </Row>

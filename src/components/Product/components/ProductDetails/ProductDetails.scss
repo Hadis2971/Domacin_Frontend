@@ -60,11 +60,35 @@
   }
 
   .additional-info {
+    display: flex;
+    flex-wrap: wrap;
     margin-bottom: 3px;
     color: $text-main-color;
 
+    div {
+      margin-right: 5px;
+    }
+
     span {
       color: $primary-color;
+    }
+
+    .product-category-link {
+      text-decoration: none;
+      margin-right: 5px;
+      color: $primary-color;
+    }
+
+    .product-category-link::after {
+      content: ",";
+    }
+
+    .product-category-link:last-child {
+      margin-right: 0px;
+    }
+
+    .product-category-link:last-child:after {
+      content: "";
     }
   }
 

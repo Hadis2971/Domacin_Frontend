@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { Outlet, useLocation } from "react-router-dom";
 import { styled } from "styled-components";
+import { useParams } from "react-router-dom";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -25,12 +26,18 @@ const MainContentContainer = styled.div<{
   background-color: #f2f2f2;
 `;
 
-const getPageHeadingTitle = (pathname: string): string | null => {
+const getPageHeadingTitle = (
+  pathname: string,
+  category: string | undefined
+): string | null => {
   switch (pathname) {
     case "/shop":
+    case `/shop/${category}`:
       return "Shop";
+
     case "/articles":
       return "Clanci";
+
     case "/auth":
       return "Prijava";
 
@@ -42,8 +49,9 @@ const getPageHeadingTitle = (pathname: string): string | null => {
 export default function () {
   const { pathname } = useLocation();
   const value = useContext(ProductsContext);
+  const { category } = useParams();
 
-  const headingTitle = getPageHeadingTitle(pathname);
+  const headingTitle = getPageHeadingTitle(pathname, category);
   const isHomePage = useGetIsCurrentRoute("/");
   const isAuthPage = useGetIsCurrentRoute("/auth");
 

@@ -6,6 +6,7 @@ import Layout from "./layout/Layout";
 import Auth from "./pages/Auth/Auth";
 import Home from "./pages/Home/Home";
 import Shop from "./pages/Shop/Shop";
+import ShopCategory from "./pages/ShopCategory/ShopCategory";
 import Articles from "./pages/Articles/Articles";
 
 import ProductsContext from "./state/Products";
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/shop/:category",
+        element: <ShopCategory />,
       },
       {
         path: "/shop",

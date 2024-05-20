@@ -1,4 +1,5 @@
 import { useState, useContext, useMemo } from "react";
+import { Link } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Carousel from "react-bootstrap/Carousel";
@@ -19,7 +20,15 @@ import "./Product.scss";
 export const getProductCategories = (categories: number[] | undefined) => {
   if (!categories) return null;
 
-  return categories.map((category) => Categories[category]).join(", ");
+  return categories.map((category) => (
+    <Link
+      className="product-category-link"
+      to={`shop/:${category}`}
+      target="_blank"
+    >
+      {Categories[category]}
+    </Link>
+  ));
 };
 
 export default function ({
@@ -68,7 +77,9 @@ export default function ({
           <h2 className="price">{price}KM</h2>
           <div className="stock">{`Raspolozivost: ${stock}`}</div>
           {categories && categories.length > 0 && (
-            <div className="category">{`Kategorije: ${CategoriesString}`}</div>
+            <div className="category">
+              <div>Kategorije:</div> {CategoriesString}
+            </div>
           )}
           <div className="skuCode">{skuCode}</div>
           {!!averageRaiting ? (
