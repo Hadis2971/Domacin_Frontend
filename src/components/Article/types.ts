@@ -15,4 +15,5 @@ export type ArticleComment = {
   firstName: string;
   lastName: string;
   timestamp: string;
+  verified: boolean | null;
 };

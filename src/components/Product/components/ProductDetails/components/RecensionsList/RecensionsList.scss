@@ -19,6 +19,13 @@
     font-size: 1em;
     margin-bottom: 30px;
     color: $text-main-color;
+
+    .verified-icon {
+      position: relative;
+      top: 0.3em;
+      font-size: 0.9em;
+      color: $primary-color;
+    }
   }
 
   .recension-title {

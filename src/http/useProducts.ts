@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { Recension } from "../components/Product/components/ProductDetails/components/RecensionsList/types";
 import { Product } from "../state/Products/types";
+import { useAuthUser } from "./useAuth";
 
 type ProductOrderType = {
   id: number;
@@ -27,10 +28,6 @@ type UseRecensionParamsType = {
   lastName: string;
   rating: number;
 };
-
-// type UseGetProductsReturnType = {
-//   data: Product[];
-// };
 
 export const useGetProducts = () => {
   const queryFn = async () => {
@@ -98,6 +95,7 @@ export const useOrderProducts = () => {
 
 export const useRecension = () => {
   const queryClient = useQueryClient();
+  const { data: user } = useAuthUser();
 
   const mutationFn = ({
     title,
@@ -132,6 +130,7 @@ export const useRecension = () => {
             rating: variables.rating,
             firstName: variables.firstName,
             lastName: variables.lastName,
+            verified: !!user,
           } as Recension;
 
           product.recensions = [...product.recensions, recension];

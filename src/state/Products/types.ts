@@ -13,6 +13,7 @@ export type Product = {
   recensions: Recension[] | [];
   images: string[];
   categories?: number[];
+  verified: boolean | null;
 };
 
 export type ProductsContextProps = {

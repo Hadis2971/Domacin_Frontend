@@ -2,14 +2,19 @@ import React, { useState } from "react";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUp,
+  faArrowDown,
+  faCircleCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
+import { useAuthUser } from "../../http/useAuth";
 import { CommentsProps } from "./types";
 
 import "./Comments.scss";
-import { useAuthUser } from "../../http/useAuth";
 
 export default function ({
   comments,
@@ -99,7 +104,23 @@ export default function ({
               <div>{comment.text}</div>
               <div>
                 <div>
-                  {comment.firstName} {comment.lastName}
+                  {comment.firstName} {comment.lastName}{" "}
+                  {comment.verified && (
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 250, hide: 400 }}
+                      overlay={
+                        <Tooltip id="button-tooltip">
+                          Verifikovan Korisnik
+                        </Tooltip>
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={faCircleCheck}
+                        className="verified-icon"
+                      />
+                    </OverlayTrigger>
+                  )}
                 </div>
                 <div>{new Date(comment.timestamp).toLocaleDateString()}</div>
               </div>

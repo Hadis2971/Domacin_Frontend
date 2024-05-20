@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 import Rating from "../../../../../Rating/Rating";
 
@@ -29,7 +31,21 @@ export default function RecensionsList({ recensions }: RecensionsListProps) {
         return (
           <div className="recension-container" key={recension.id}>
             <div className="recension-user-info">
-              Korisnik: {recension.firstName} {recension.lastName}
+              Korisnik: {recension.firstName} {recension.lastName}{" "}
+              {recension.verified && (
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={
+                    <Tooltip id="button-tooltip">Verifikovan Korisnik</Tooltip>
+                  }
+                >
+                  <FontAwesomeIcon
+                    icon={faCircleCheck}
+                    className="verified-icon"
+                  />
+                </OverlayTrigger>
+              )}
             </div>
             <div className="recension-title">{recension.title}</div>
             <div className="recension-description">{recension.description}</div>

@@ -5,6 +5,7 @@ export type Recension = {
   rating: number;
   firstName: string;
   lastName: string;
+  verified: boolean | null;
 };
 
 export type RecensionsListProps = {

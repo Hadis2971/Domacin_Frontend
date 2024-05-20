@@ -68,5 +68,12 @@
       font-size: 1em;
       font-style: italic;
     }
+
+    .verified-icon {
+      position: relative;
+      top: 0.3em;
+      font-size: 0.7em;
+      color: $primary-color;
+    }
   }
 }

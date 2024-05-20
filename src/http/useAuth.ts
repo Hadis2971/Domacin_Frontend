@@ -23,6 +23,7 @@ export type User = {
   lastName: string;
   address: string;
   password: string;
+  verified: boolean | null;
 };
 
 export const useRegisterUser = () => {
@@ -98,6 +99,6 @@ export const useLogoutUser = () => {
   return () => {
     sessionStorage.removeItem("authToken");
     queryClient.setQueryData(["user"], null);
-    navigate("/auth");
+    navigate("/");
   };
 };

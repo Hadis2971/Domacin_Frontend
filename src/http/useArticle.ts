@@ -2,6 +2,7 @@ import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { Article, ArticleComment } from "../pages/Articles/type";
+import { useAuthUser } from "./useAuth";
 
 type usePostArticleCommentReqType = {
   articleId: number;
@@ -26,6 +27,7 @@ export const useGetArticles = () => {
 
 export const usePostArticleComment = () => {
   const queryClient = useQueryClient();
+  const { data: user } = useAuthUser();
 
   const mutationFn = (comment: usePostArticleCommentReqType) =>
     axios.post("http://127.0.0.1:5000/articles/comment", comment);
@@ -41,6 +43,7 @@ export const usePostArticleComment = () => {
         lastName: variables.lastName,
         text: variables.text,
         timestamp: new Date().toLocaleDateString(),
+        verified: !!user,
       } as ArticleComment;
 
       const updatedArticles = articles.map((article) => {

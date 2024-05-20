@@ -1,11 +1,10 @@
-import { ArticleComment } from "../Article/types";
-
 export type Comment = {
   id: number;
   text: string;
   firstName: string;
   lastName: string;
   timestamp: string;
+  verified: boolean | null;
 };
 
 export type CommentsProps = {
@@ -13,7 +12,7 @@ export type CommentsProps = {
   comments: Comment[];
   isLoading: boolean;
   onPostComment: (
-    comment: Omit<Comment, "timestamp" | "id"> & {
+    comment: Omit<Comment, "timestamp" | "id" | "verified"> & {
       articleId: number;
       userId: number | null;
     }
