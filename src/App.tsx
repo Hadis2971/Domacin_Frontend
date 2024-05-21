@@ -8,6 +8,7 @@ import Home from "./pages/Home/Home";
 import Shop from "./pages/Shop/Shop";
 import ShopCategory from "./pages/ShopCategory/ShopCategory";
 import Articles from "./pages/Articles/Articles";
+import ArticlesCategory from "./pages/ArticlesCategory/ArticlesCategory";
 
 import ProductsContext from "./state/Products";
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/shop",
         element: <Shop />,
+      },
+      {
+        path: "/articles/:category",
+        element: <ArticlesCategory />,
       },
       {
         path: "/articles",

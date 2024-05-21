@@ -36,6 +36,7 @@ const getPageHeadingTitle = (
       return "Shop";
 
     case "/articles":
+    case `/articles/${category}`:
       return "Clanci";
 
     case "/auth":

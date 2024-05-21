@@ -35,7 +35,10 @@ export default function ({
           <h5>{title}</h5>
 
           {categories && categories.length > 0 && (
-            <div className="category">{`Kategorije: ${CategoriesString}`}</div>
+            <div className="category">
+              <div>Kategorije:</div>
+              {CategoriesString}
+            </div>
           )}
 
           <div className="description">{description}</div>
@@ -75,7 +78,10 @@ export default function ({
             : description}
 
           {categories && categories.length > 0 && (
-            <div className="category">{`Kategorije: ${CategoriesString}`}</div>
+            <div className="category">
+              <div>Kategorije:</div>
+              {CategoriesString}
+            </div>
           )}
 
           <div>

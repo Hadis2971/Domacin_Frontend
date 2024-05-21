@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
 
 import { Article, ArticleComment } from "../pages/Articles/type";
 import { useAuthUser } from "./useAuth";
@@ -23,6 +24,25 @@ export const useGetArticles = () => {
     queryFn,
     queryKey: ["articles"],
   });
+};
+
+export const useGetArticlesBasedOnCategory = () => {
+  const { category } = useParams();
+
+  const queryFn = async () => {
+    const res = await axios.get(
+      `http://127.0.0.1:5000/articles/${category?.slice(1)}`
+    );
+
+    return res.data;
+  };
+
+  const query = useQuery({
+    queryFn,
+    queryKey: ["articles", category],
+  });
+
+  return query;
 };
 
 export const usePostArticleComment = () => {

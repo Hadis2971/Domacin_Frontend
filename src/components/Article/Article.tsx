@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 import { usePostArticleComment } from "../../http/useArticle";
 import { Categories } from "../Product/types";
@@ -13,7 +14,15 @@ import "./Article.scss";
 export const getArticleCategories = (categories: number[] | undefined) => {
   if (!categories) return null;
 
-  return categories.map((category) => Categories[category]).join(", ");
+  return categories.map((category) => (
+    <Link
+      className="article-category-link"
+      to={`/articles/:${category}`}
+      target="_blank"
+    >
+      {Categories[category]}
+    </Link>
+  ));
 };
 
 export default function ({
@@ -50,7 +59,10 @@ export default function ({
         <div className="info-container">
           <div className="description">{description.slice(0, 600)}</div>
           <div className="categories-author-container">
-            <div className="categories-list">{`Kategorije: ${CategoriesString}`}</div>
+            <div className="categories-list">
+              <div>Kategorije:</div>
+              {CategoriesString}
+            </div>
             <div>
               Autor: {firstName} {lastName}
             </div>
