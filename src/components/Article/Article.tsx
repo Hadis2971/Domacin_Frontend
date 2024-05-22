@@ -19,6 +19,7 @@ export const getArticleCategories = (categories: number[] | undefined) => {
       className="article-category-link"
       to={`/articles/:${category}`}
       target="_blank"
+      key={category}
     >
       {Categories[category]}
     </Link>

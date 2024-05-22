@@ -25,6 +25,7 @@ export const getProductCategories = (categories: number[] | undefined) => {
       className="product-category-link"
       to={`shop/:${category}`}
       target="_blank"
+      key={category}
     >
       {Categories[category]}
     </Link>

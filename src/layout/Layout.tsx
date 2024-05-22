@@ -10,6 +10,7 @@ import Footer from "./components/Footer/Footer";
 import CheckoutModal from "./components/CheckoutModal/CheckoutModal";
 import useGetIsCurrentRoute from "../hooks/useGetIsCurrentRoute";
 
+import useWebsockets from "../http/useWebsockets";
 import { ProductsContext } from "../state/Products";
 
 import "./Layout.scss";
@@ -48,6 +49,7 @@ const getPageHeadingTitle = (
 };
 
 export default function () {
+  useWebsockets();
   const { pathname } = useLocation();
   const value = useContext(ProductsContext);
   const { category } = useParams();
