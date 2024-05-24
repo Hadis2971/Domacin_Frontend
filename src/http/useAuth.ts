@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 type RegisterPayload = {
   username: string;
@@ -38,7 +39,13 @@ export const useRegisterUser = () => {
   const mutation = useMutation({
     mutationFn,
     onSuccess: (response) => console.log(response),
-    onError: (error) => console.log(error),
+    onError: (error: AxiosError) => {
+      console.log(error);
+      const errorMsg = (error.response?.data ||
+        "Greska Registracije") as String;
+
+      toast.error(errorMsg);
+    },
   });
 
   return mutation;
@@ -67,7 +74,12 @@ export const useLoginUser = () => {
       sessionStorage.setItem("authToken", response.data);
       navigate("/");
     },
-    onError: (error) => console.log(error),
+    onError: (error: AxiosError) => {
+      console.log(error);
+      const errorMsg = (error.response?.data || "Greska Prijave") as String;
+
+      toast.error(errorMsg);
+    },
   });
 
   return mutation;

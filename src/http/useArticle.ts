@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { Article, ArticleComment } from "../pages/Articles/type";
 import { useAuthUser } from "./useAuth";
@@ -23,6 +24,13 @@ export const useGetArticles = () => {
   return useQuery({
     queryFn,
     queryKey: ["articles"],
+    onError: (error: AxiosError) => {
+      console.log(error);
+      const errorMsg = (error.response?.data ||
+        "Greska Preuzimanja Clanaka") as String;
+
+      toast.error(errorMsg);
+    },
   });
 };
 
@@ -40,6 +48,13 @@ export const useGetArticlesBasedOnCategory = () => {
   const query = useQuery({
     queryFn,
     queryKey: ["articles", category],
+    onError: (error: AxiosError) => {
+      console.log(error);
+      const errorMsg = (error.response?.data ||
+        "Greska Preuzimanja Clanaka") as String;
+
+      toast.error(errorMsg);
+    },
   });
 
   return query;
@@ -73,6 +88,13 @@ export const usePostArticleComment = () => {
       });
 
       queryClient.setQueryData(["articles"], updatedArticles);
+    },
+    onError: (error: AxiosError) => {
+      console.log(error);
+      const errorMsg = (error.response?.data ||
+        "Greska Komentarisanja Clanka") as String;
+
+      toast.error(errorMsg);
     },
   });
 };

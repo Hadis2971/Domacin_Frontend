@@ -1,9 +1,10 @@
-import { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import { useContext } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { styled } from "styled-components";
 import { useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -12,6 +13,8 @@ import useGetIsCurrentRoute from "../hooks/useGetIsCurrentRoute";
 
 import useWebsockets from "../http/useWebsockets";
 import { ProductsContext } from "../state/Products";
+
+import "react-toastify/dist/ReactToastify.css";
 
 import "./Layout.scss";
 
@@ -81,6 +84,8 @@ export default function () {
       </Row>
 
       {value?.displayCheckoutModal && <CheckoutModal />}
+
+      <ToastContainer />
     </Container>
   );
 }

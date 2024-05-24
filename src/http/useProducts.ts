@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { Recension } from "../components/Product/components/ProductDetails/components/RecensionsList/types";
 import { Product } from "../state/Products/types";
@@ -33,13 +34,19 @@ type UseRecensionParamsType = {
 export const useGetProducts = () => {
   const queryFn = async () => {
     const res = await axios.get("http://127.0.0.1:5000/products/");
-
     return res.data;
   };
 
   const query = useQuery({
     queryFn,
     queryKey: ["products"],
+    onError: (error: AxiosError) => {
+      console.log(error);
+      const errorMsg = (error.response?.data ||
+        "Greska Preuzimanja Proizvoda") as String;
+
+      toast.error(errorMsg);
+    },
   });
 
   return query;
@@ -59,6 +66,13 @@ export const useGetProductsBasedOnCategory = () => {
   const query = useQuery({
     queryFn,
     queryKey: ["products", category],
+    onError: (error: AxiosError) => {
+      console.log(error);
+      const errorMsg = (error.response?.data ||
+        "Greska Preuzimanja Proizvoda") as String;
+
+      toast.error(errorMsg);
+    },
   });
 
   return query;
@@ -106,7 +120,13 @@ export const useOrderProducts = () => {
 
       queryClient.setQueryData(["products"], updatedProducts);
     },
-    onError: (error) => console.log(error),
+    onError: (error: AxiosError) => {
+      console.log(error);
+      const errorMsg = (error.response?.data ||
+        "Greska Narucivanja Proizvoda") as String;
+
+      toast.error(errorMsg);
+    },
   });
 
   return mutation;
@@ -160,7 +180,13 @@ export const useRecension = () => {
 
       queryClient.setQueryData(["products"], updatedProducts);
     },
-    onError: (error) => console.log(error),
+    onError: (error: AxiosError) => {
+      console.log(error);
+      const errorMsg = (error.response?.data ||
+        "Greska Recenzije Proizvoda") as String;
+
+      toast.error(errorMsg);
+    },
   });
 
   return mutation;
