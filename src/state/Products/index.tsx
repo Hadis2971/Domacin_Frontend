@@ -6,19 +6,23 @@ import {
   Product,
   ProductsContextProps,
   GetFormatedListOfSelectedProductsReturnType,
+  ProductAttributeVariation,
+  SelectedProduct,
 } from "./types";
 
 export const ProductsContext = createContext<{
   listOfProducts: Product[];
-  selectedProducts: Map<Product | undefined, number>;
+  selectedProducts: Map<SelectedProduct | undefined, number>;
   displayCheckoutModal: boolean;
+  selectedProductAttributeVaration: ProductAttributeVariation | null;
   handleToggleDisplayCheckoutModal: () => void;
-  handleSelectProduct: (id: number) => void;
-  handleDeselectProduct: (id: number) => void;
+  handleSelectProduct: (selectedProduct: SelectedProduct) => void;
+  handleDeselectProduct: (selectedProduct: SelectedProduct) => void;
   handleDeselectAllProducts: () => void;
   handleSetSelectedProductQuantity: (
     id: number,
-    quantity: number | undefined
+    quantity: number | undefined,
+    variationID?: number
   ) => void;
   getFormatedListOfSelectedProducts: () => GetFormatedListOfSelectedProductsReturnType[];
 } | null>(null);
@@ -26,86 +30,148 @@ export const ProductsContext = createContext<{
 export default ({ children }: ProductsContextProps) => {
   const { data } = useGetProducts();
 
+  console.log("datadatadatadatadatadatadatadata", data);
+
   const [listOfProducts, setListOfProducts] = useState(data);
   const [displayCheckoutModal, setDisplayCheckoutModal] = useState(false);
+  const [
+    selectedProductAttributeVaration,
+    setSelectedProductAttributeVaration,
+  ] = useState<ProductAttributeVariation | null>(null);
 
   useEffect(() => {
-    setListOfProducts(data);
+    console.log(
+      "useEffectuseEffectuseEffectuseEffectuseEffectuseEffectuseEffect"
+    );
+    data && setListOfProducts([...data]);
   }, [data]);
 
   const [selectedProducts, setSelectedProducts] = useState<
-    Map<Product | undefined, number>
-  >(new Map<Product | undefined, number>());
+    Map<SelectedProduct | undefined, number>
+  >(new Map<SelectedProduct | undefined, number>());
 
   const handleToggleDisplayCheckoutModal = () => {
     setDisplayCheckoutModal((displayCheckoutModal) => !displayCheckoutModal);
   };
 
-  const handleSelectProduct = (id: number) => {
+  const handleSelectProduct = (selectedProduct: SelectedProduct) => {
     const selectedProductsCopy = new Map(selectedProducts);
-    const product = listOfProducts?.find(
-      (product: { id: number }) => product.id === id
+    const { id, productID, variationID } = selectedProduct;
+
+    //console.log("handleSelectProduct", selectedProduct);
+
+    if (!selectedProduct) return;
+
+    const product = listOfProducts.find(
+      (product: Product) => product.id === (productID || id)
     );
+    const variation = variationID
+      ? product.attribute.variations.find(
+          (variation: ProductAttributeVariation) => variation.id === variationID
+        )
+      : null;
 
-    if (!product) return;
+    const productCount = variation
+      ? selectedProductsCopy.get(variation)
+      : selectedProductsCopy.get(product);
 
-    const productCount = selectedProductsCopy.get(product);
+    const productStock = selectedProduct.stock;
 
-    if (product && productCount && product.stock! <= productCount) return;
+    if (productCount && productStock <= productCount) return;
+    const productToSet = variation ? variation : product;
 
-    if (!productCount) selectedProductsCopy.set(product, 1);
+    //console.log("productToSetproductToSetproductToSet", productToSet);
+
+    if (!productCount)
+      variation
+        ? selectedProductsCopy.set(productToSet, 1)
+        : selectedProductsCopy.set(productToSet, 1);
     else {
-      const count = selectedProductsCopy.get(product) || 0;
-      selectedProductsCopy.set(product, count + 1);
+      const count = selectedProductsCopy.get(productToSet) || 0;
+      selectedProductsCopy.set(productToSet, count + 1);
     }
 
     setSelectedProducts(selectedProductsCopy);
   };
 
-  const handleDeselectProduct = (id: number) => {
+  const handleDeselectProduct = (selectedProduct: SelectedProduct) => {
     const selectedProductsCopy = new Map(selectedProducts);
-    const product = listOfProducts?.find(
-      (product: { id: number }) => product.id === id
-    );
+    const { id, variationID } = selectedProduct;
 
-    if (!product) return;
+    console.log("handleDeselectProduct", selectedProduct);
 
-    const productCount = selectedProductsCopy.get(product);
+    if (!selectedProduct) return;
 
-    if (productCount && productCount <= 1) selectedProductsCopy.delete(product);
+    const product = !variationID
+      ? listOfProducts.find((product: Product) => product.id === id)
+      : listOfProducts.find((product: Product) => {
+          return product.attribute?.variations?.find(
+            (variation) => variation.variationID === variationID
+          );
+        });
+
+    const variation = variationID
+      ? product.attribute?.variations?.find(
+          (variation: ProductAttributeVariation) => variation.id === variationID
+        )
+      : null;
+
+    // console.log(
+    //   "variationvariationvariationvariationvariationvariationvariationvariationvariation",
+    //   variation
+    // );
+
+    const productCount = variation
+      ? selectedProductsCopy.get(variation)
+      : selectedProductsCopy.get(product);
+
+    const productToSet = variation ? variation : product;
+
+    if (productCount && productCount <= 1)
+      selectedProductsCopy.delete(productToSet);
     else {
-      const count = selectedProductsCopy.get(product) || 0;
-      selectedProductsCopy.set(product, count - 1);
+      const count = selectedProductsCopy.get(productToSet) || 0;
+      selectedProductsCopy.set(productToSet, count - 1);
     }
 
     setSelectedProducts(selectedProductsCopy);
   };
 
   const handleDeselectAllProducts = () => {
-    setSelectedProducts(new Map<Product | undefined, number>());
+    setSelectedProducts(new Map<SelectedProduct | undefined, number>());
   };
 
   const handleSetSelectedProductQuantity = (
     id: number,
+    variationID?: number,
     quanity: number | undefined = 0
   ) => {
-    if (!id) return;
+    if (!id && !variationID) return;
 
     const selectedProductsCopy = new Map(selectedProducts);
-    const product = listOfProducts?.find(
-      (product: { id: number }) => product.id === id
+    const product = listOfProducts.find(
+      (product: Product) => product.id === id
     );
+    const variation = variationID
+      ? product.attribute.variations.find(
+          (variation: ProductAttributeVariation) => variation.id === variationID
+        )
+      : null;
 
-    if (!product) return;
+    if (!product && !variation) return;
 
-    const productCount = selectedProductsCopy.get(product);
+    const productToSet = variation ? variation : product;
 
-    if (
-      (product.stock && product.stock >= quanity) ||
-      !quanity ||
-      !productCount
-    ) {
-      selectedProductsCopy.set(product, quanity);
+    // console.log(
+    //   "handleSetSelectedProductQuantityhandleSetSelectedProductQuantity productToSet",
+    //   productToSet
+    // );
+
+    const productCount = selectedProductsCopy.get(productToSet);
+    const productStock = variation ? variation.stock : product.stock;
+
+    if (productStock >= quanity || !quanity || !productCount) {
+      selectedProductsCopy.set(productToSet, quanity);
       setSelectedProducts(selectedProductsCopy);
     } else {
       return;
@@ -122,19 +188,26 @@ export default ({ children }: ProductsContextProps) => {
       while (nextValue) {
         const [product, count] = nextValue;
 
-        const foundProduct = listOfProducts?.find(
-          ({ id }: Product) => product.id === id
-        );
-
         formatedList.push({
-          id: product.id,
+          id: product.productID || product.id,
           name: product.name,
           quantity: count,
-          stock: foundProduct.stock,
+          price: product.price,
+          stock: product.stock,
+          attribute:
+            typeof product.attribute === "number"
+              ? product.attribute
+              : product.attribute?.type,
+          variationID: product.variationID,
         });
 
         nextValue = iterator.next().value;
       }
+
+      // console.log(
+      //   "formatedListformatedListformatedListformatedListformatedList",
+      //   formatedList
+      // );
 
       return formatedList;
     };
@@ -143,6 +216,8 @@ export default ({ children }: ProductsContextProps) => {
     listOfProducts,
     selectedProducts,
     displayCheckoutModal,
+    selectedProductAttributeVaration,
+    setSelectedProductAttributeVaration,
     handleSelectProduct,
     handleDeselectProduct,
     handleDeselectAllProducts,

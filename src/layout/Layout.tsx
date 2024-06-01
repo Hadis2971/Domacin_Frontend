@@ -1,6 +1,6 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { styled } from "styled-components";
 import { useParams } from "react-router-dom";
@@ -52,10 +52,14 @@ const getPageHeadingTitle = (
 };
 
 export default function () {
-  useWebsockets();
   const { pathname } = useLocation();
   const value = useContext(ProductsContext);
   const { category } = useParams();
+  // const connectWebsockets = useWebsockets();
+
+  // useEffect(() => {
+  //   connectWebsockets();
+  // }, []);
 
   const headingTitle = getPageHeadingTitle(pathname, category);
   const isHomePage = useGetIsCurrentRoute("/");

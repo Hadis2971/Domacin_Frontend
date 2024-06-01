@@ -9,6 +9,7 @@ import { ProductsContext } from "../../../../state/Products";
 import { NavbarOffcanvasProps } from "../types";
 
 import "./NavbarOffcanvas.scss";
+import { Product } from "../../../../state/Products/types";
 
 export default function ({
   show,
@@ -27,6 +28,8 @@ export default function ({
     handleClose();
     value?.handleToggleDisplayCheckoutModal();
   };
+
+  //console.log("products", products);
 
   return (
     <Offcanvas
@@ -49,7 +52,7 @@ export default function ({
                 icon={faArrowDown}
                 onClick={
                   handleDeselectProduct
-                    ? () => handleDeselectProduct(product.id)
+                    ? () => handleDeselectProduct(product)
                     : undefined
                 }
               />
@@ -58,7 +61,7 @@ export default function ({
                 icon={faArrowUp}
                 onClick={
                   handleSelectProduct
-                    ? () => handleSelectProduct(product.id)
+                    ? () => handleSelectProduct(product)
                     : undefined
                 }
                 color={product.quantity >= product.stock ? "grey" : "#e91e63"}

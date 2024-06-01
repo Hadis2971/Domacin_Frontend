@@ -5,39 +5,101 @@ import { Product } from "../state/Products/types";
 
 type ParsedData = {
   id: number;
+  variationID?: number;
   productName: string;
   initialStock: number;
   currentStock: number;
 };
 
-export default async () => {
+export default () => {
   const queryClient = useQueryClient();
-  const oldData = (await queryClient.getQueryData(["products"])) as Product[];
-  const socket = new WebSocket("ws://localhost:8080");
+  let socket: WebSocket | null = null;
 
-  socket.addEventListener("open", () => {
-    console.log("WS Connected!!!");
-  });
-
-  socket.addEventListener("message", ({ data }) => {
-    const parsedDate: ParsedData[] = JSON.parse(data);
-
-    const infoMsg = parsedDate.reduce((acc, curr) => {
-      return (
-        acc +
-        `Prodizvod ${curr.productName} Prosla raspolozivost: ${curr.initialStock} Trenutna raspolozivost: ${curr.currentStock} \n`
+  return {
+    getSocketReadyState: () => {
+      console.log(
+        "socket instanceof WebSocketsocket instanceof WebSocket",
+        socket instanceof WebSocket,
+        socket?.readyState
       );
-    }, "");
 
-    const newData = oldData?.map((product: Product) => {
-      const foundProduct = parsedDate.find((d) => d.id === product.id);
+      if (socket instanceof WebSocket)
+        return socket.readyState === WebSocket.OPEN;
+      else return false;
+    },
 
-      if (foundProduct) return { ...product, stock: foundProduct.currentStock };
+    connectWebsockets: () => {
+      console.log(
+        "connectWebsocketsconnectWebsocketsconnectWebsocketsconnectWebsocketsconnectWebsocketsconnectWebsocketsconnectWebsocketsconnectWebsocketsconnectWebsockets"
+      );
 
-      return product;
-    });
+      socket = new WebSocket("ws://localhost:8080");
 
-    queryClient.setQueryData(["products"], newData);
-    toast.info(infoMsg);
-  });
+      socket.addEventListener("connection", () => {
+        console.log("WS CONNECTION!!!");
+      });
+
+      socket.addEventListener("open", () => {
+        console.log("WS Connected!!!");
+      });
+
+      socket.addEventListener("message", ({ data }) => {
+        const oldData = queryClient.getQueryData(["products"]) as Product[];
+        const parsedDate: ParsedData[] = JSON.parse(data);
+
+        console.log(
+          "oldDataoldDataoldDataoldDataoldDataoldDataoldData",
+          oldData
+        );
+
+        console.log("parsedDateparsedDateparsedDate", parsedDate);
+
+        console.log(
+          "WS MESSAGE WS MESSAGE WS MESSAGE WS MESSAGE WS MESSAGE WS MESSAGE WS MESSAGE WS MESSAGE WS MESSAGE "
+        );
+
+        const infoMsg = parsedDate.reduce((acc, curr) => {
+          return (
+            acc +
+            `Prodizvod ${curr.productName} Prosla raspolozivost: ${curr.initialStock} Trenutna raspolozivost: ${curr.currentStock} \n`
+          );
+        }, "");
+
+        const newData = oldData?.map((product: Product) => {
+          const foundProduct = parsedDate.find((d) => d.id === product.id);
+
+          if (foundProduct) {
+            if (!foundProduct.variationID)
+              return { ...product, stock: foundProduct.currentStock };
+            else {
+              const variations = product.attribute.variations?.map((v) => {
+                if (v.id === foundProduct.variationID)
+                  return {
+                    ...v,
+                    stock: foundProduct.currentStock,
+                  };
+                else return v;
+              });
+
+              return {
+                ...product,
+                attribute: { ...product.attribute, variations },
+              };
+            }
+          }
+
+          return product;
+        });
+
+        console.log("newDatanewDatanewDatanewDatanewDatanewData", newData);
+
+        queryClient.setQueryData(["products"], newData);
+        toast.info(infoMsg);
+      });
+    },
+
+    disconnectWebsockets: () => {
+      socket?.close();
+    },
+  };
 };

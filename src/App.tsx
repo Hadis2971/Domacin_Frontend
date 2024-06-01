@@ -13,6 +13,8 @@ import ArticlesCategory from "./pages/ArticlesCategory/ArticlesCategory";
 import ProductsContext from "./state/Products";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import useWebsockets from "./http/useWebsockets";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
@@ -50,13 +52,29 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ProductsContext>
-        <RouterProvider router={router} />
-      </ProductsContext>
-    </QueryClientProvider>
-  );
+  const { connectWebsockets, disconnectWebsockets, getSocketReadyState } =
+    useWebsockets();
+
+  useEffect(() => {
+    console.log(
+      "getSocketReadyStategetSocektReadyStategetSocketReadyState",
+      getSocketReadyState()
+    );
+
+    if (!getSocketReadyState()) connectWebsockets();
+
+    return () => disconnectWebsockets();
+  }, []);
+
+  // return (
+  //   <QueryClientProvider client={queryClient}>
+  //     <ProductsContext>
+  //       <RouterProvider router={router} />
+  //     </ProductsContext>
+  //   </QueryClientProvider>
+  // );
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

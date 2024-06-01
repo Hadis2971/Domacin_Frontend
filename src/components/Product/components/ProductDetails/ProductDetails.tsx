@@ -15,13 +15,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 import { ProductsContext } from "../../../../state/Products";
-import { getProductCategories } from "../../Product";
+import { getProductCategories, getProductAttribute } from "../../Product";
 import RecensionForm from "./components/RecensionForm/RecensionForm";
 import RecensionsList from "./components/RecensionsList/RecensionsList";
 
 import { ProductDetailsProps } from "../../types";
 
 import "./ProductDetails.scss";
+import {
+  ProductAttribute,
+  ProductAttributeVariation,
+  SelectedProduct,
+} from "../../../../state/Products/types";
 
 const SECTIONS = {
   LONG_DESCRIPTION: 1,
@@ -31,12 +36,14 @@ const SECTIONS = {
 
 export default function ProductDetails({
   id,
+  variationID,
   skuCode,
   name,
   averageRaiting,
   shortDescription,
   longDescription,
   price,
+  attribute,
   stock,
   categories,
   images,
@@ -49,10 +56,27 @@ export default function ProductDetails({
     () => value?.listOfProducts?.find((product) => product.id === id),
     [id]
   );
-  const productCount = useMemo(
-    () => value?.selectedProducts.get(product) || 0,
-    [id]
-  );
+
+  const productCount = useMemo(() => {
+    const variation = variationID
+      ? product?.attribute?.variations?.find(
+          (variation) => variation.id === variationID
+        )
+      : null;
+
+    if (variation) return value?.selectedProducts.get(variation) || 0;
+    else {
+      const iterator = value?.selectedProducts.entries();
+      let nextValue = iterator?.next().value;
+
+      while (nextValue) {
+        const [product, count] = nextValue;
+        if (product.productID === id) return count;
+
+        nextValue = iterator?.next().value;
+      }
+    }
+  }, [id]);
 
   const [productQuanity, setProductQuanity] = useState(productCount);
 
@@ -62,6 +86,10 @@ export default function ProductDetails({
 
   const [displayProductStock, setDisplayProductStock] = useState(false);
 
+  const [selectedAttributeVariation, setSelectedAttributeVariation] = useState(
+    () => (attribute?.variations ? attribute?.variations[0] : null)
+  );
+
   const CategoriesString = useMemo(
     () => getProductCategories(categories),
     [categories]
@@ -70,8 +98,9 @@ export default function ProductDetails({
   const handleChangeProductQuantity = (
     evt: React.ChangeEvent<HTMLInputElement>
   ) => {
+    const stock = product?.stock || selectedAttributeVariation?.stock;
     if (
-      Number(evt.target.value) > Number(product?.stock) ||
+      Number(evt.target.value) > Number(stock) ||
       Number(evt.target.value) < 0
     ) {
       setDisplayProductStock(true);
@@ -83,7 +112,24 @@ export default function ProductDetails({
   };
 
   const handleSetQuantity = () => {
-    value?.handleSetSelectedProductQuantity(id, productQuanity);
+    // console.log(
+    //   "handleSetQuantity",
+    //   id,
+    //   selectedAttributeVariation?.id,
+    //   productQuanity
+    // );
+
+    value?.handleSetSelectedProductQuantity(
+      id,
+      selectedAttributeVariation?.id,
+      productQuanity
+    );
+  };
+
+  const handleChangeSelectedAttribute = (
+    attribute: ProductAttributeVariation
+  ) => {
+    setSelectedAttributeVariation(attribute);
   };
 
   return (
@@ -110,9 +156,13 @@ export default function ProductDetails({
             </Col>
             <Col lg={6} sm={12}>
               <div className="mb-3">
-                <div className="price mb-1">{`Cijena: ${price}KM`}</div>
+                <div className="price mb-1">{`Cijena: ${
+                  price || selectedAttributeVariation?.price
+                }KM`}</div>
                 <div className="description">{shortDescription}</div>
-                <div className="stock">Na Zalihama: {stock}</div>
+                <div className="stock">
+                  Na Zalihama: {stock || selectedAttributeVariation?.stock}
+                </div>
                 <div className="average-raiting">Ocjena: {averageRaiting}</div>
               </div>
 
@@ -128,19 +178,30 @@ export default function ProductDetails({
 
               {displayProductStock && (
                 <Alert key={"warning"} variant={"warning"}>
-                  {`Trenutno stanje proizvoda ${name} je ${stock}`}
+                  {`Trenutno stanje proizvoda ${name} je ${
+                    stock || selectedAttributeVariation?.stock
+                  }`}
                 </Alert>
               )}
 
-              <Dropdown className="mb-3">
-                <Dropdown.Toggle>Odaberi Pakovanje</Dropdown.Toggle>
+              {attribute?.variations && attribute.variations.length > 0 && (
+                <Dropdown className="mb-3">
+                  <Dropdown.Toggle>
+                    {getProductAttribute(attribute.type)}
+                  </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">Pakovanje 1</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Pakovanje 2</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Pakovanje 3</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+                  <Dropdown.Menu>
+                    {attribute.variations?.map((variation) => (
+                      <Dropdown.Item
+                        key={variation.id}
+                        onClick={() => handleChangeSelectedAttribute(variation)}
+                      >
+                        {variation.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
 
               <div className="additional-info">
                 SKU: <span>{skuCode}</span>

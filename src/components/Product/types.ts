@@ -1,4 +1,5 @@
 import { Recension } from "./components/ProductDetails/components/RecensionsList/types";
+import { ProductAttribute } from "../../state/Products/types";
 
 export type ProductProps = {
   id: number;
@@ -6,11 +7,12 @@ export type ProductProps = {
   name: string;
   shortDescription: string;
   longDescription: string;
-  price: number;
+  price?: number;
   stock?: number;
   images: string[];
   categories?: number[];
   recensions: Recension[] | [];
+  attribute: ProductAttribute;
 };
 
 export type ImagesCarouselProps = {
@@ -25,6 +27,7 @@ export type ImagesCarouselPropsState = {
 
 export type ProductDetailsProps = {
   averageRaiting: number;
+  variationID?: number;
   onClose: () => void;
 } & ProductProps;
 

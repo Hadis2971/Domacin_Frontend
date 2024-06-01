@@ -10,6 +10,7 @@ import { useAuthUser } from "./useAuth";
 type ProductOrderType = {
   id: number;
   quantity: number;
+  variationID?: number | null;
 };
 
 type UseOrderProductsParamsType = {
@@ -102,24 +103,59 @@ export const useOrderProducts = () => {
 
   const mutation = useMutation({
     mutationFn,
-    onSuccess: (response, variables) => {
-      const products = queryClient.getQueryData(["products"]) as Product[];
+    // onSuccess: async (response, variables) => {
+    //   const products = queryClient.getQueryData(["products"]) as Product[];
 
-      const updatedProducts = products.map((product) => {
-        const order = variables.order.find((order) => order.id === product.id);
+    //   // console.log(
+    //   //   "useOrderProductsuseOrderProductsuseOrderProductsuseOrderProductsuseOrderProductsuseOrderProducts",
+    //   //   products
+    //   // );
 
-        if (order) {
-          return {
-            ...product,
-            stock: Number(product.stock) - order.quantity,
-          };
-        } else {
-          return product;
-        }
-      });
+    //   const updatedProducts = products?.map((product) => {
+    //     //console.log("updatedProductsupdatedProductsupdatedProducts", product);
 
-      queryClient.setQueryData(["products"], updatedProducts);
-    },
+    //     const order = variables.order.find((order) => order.id === product.id);
+
+    //     const variation = product.attribute?.variations?.find(
+    //       (variation) => variation.id === order?.variationID
+    //     );
+
+    //     if (order) {
+    //       if (!variation)
+    //         return {
+    //           ...product,
+    //           stock: Number(product.stock) - order.quantity,
+    //         };
+    //       else {
+    //         const variations = product.attribute.variations?.map((v) => {
+    //           if (v.id === variation.id) {
+    //             console.log("sasasasasasas", v, variation);
+
+    //             return {
+    //               ...v,
+    //               stock: variation.stock - order.quantity,
+    //             };
+    //           } else return v;
+    //         });
+
+    //         return {
+    //           ...product,
+    //           attribute: { ...product.attribute, variations },
+    //         };
+    //       }
+    //     } else {
+    //       return product;
+    //     }
+    //   });
+
+    //   console.log(
+    //     "updatedProductsupdatedProductsupdatedProductsupdatedProducts",
+    //     updatedProducts,
+    //     updatedProducts === products
+    //   );
+
+    //   queryClient.setQueryData(["products"], updatedProducts);
+    // },
     onError: (error: AxiosError) => {
       console.log(error);
       const errorMsg = (error.response?.data ||

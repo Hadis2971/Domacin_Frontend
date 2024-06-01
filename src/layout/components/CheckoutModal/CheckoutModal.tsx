@@ -27,12 +27,25 @@ export default () => {
   const user = queryClient.getQueryData(["user"]) as User;
 
   useEffect(() => {
-    if (isSuccess) value?.handleDeselectAllProducts();
+    if (isSuccess) {
+      value?.handleDeselectAllProducts();
+      value?.handleToggleDisplayCheckoutModal();
+    }
   }, [isSuccess]);
+
+  // console.log(
+  //   "value.getFormatedListOfSelectedProductsvalue.getFormatedListOfSelectedProducts",
+  //   value?.getFormatedListOfSelectedProducts
+  // );
 
   const products = value?.getFormatedListOfSelectedProducts
     ? value.getFormatedListOfSelectedProducts()
     : [];
+
+  // console.log(
+  //   "CheckoutModalCheckoutModalCheckoutModalCheckoutModalCheckoutModalCheckoutModal",
+  //   products
+  // );
 
   const handleCheckout = () => {
     if (
@@ -46,6 +59,9 @@ export default () => {
       const order = products.map((product) => ({
         id: product.id,
         quantity: product.quantity,
+        price: product.price,
+        attribute: product.attribute,
+        variationID: product.variationID,
       }));
 
       mutate({

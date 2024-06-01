@@ -11,6 +11,8 @@ export default function () {
   const value = useContext(ProductsContext);
   const { isLoading } = useGetProducts();
 
+  console.log("valuevaluevaluevaluevaluevaluevalue", value?.listOfProducts);
+
   return (
     <>
       {isLoading ? (
